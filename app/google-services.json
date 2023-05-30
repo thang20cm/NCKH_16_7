@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "411716103874",
+    "project_id": "nckh-java",
+    "storage_bucket": "nckh-java.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411716103874:android:e40d81d13c9194c00bd55b",
+        "android_client_info": {
+          "package_name": "com.example.nghincukhoahc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR6B5CVOKIvO759-yxvZyXv3LHR_kjTk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411716103874:android:7333fb18fdd4d9180bd55b",
+        "android_client_info": {
+          "package_name": "com.intcce.pocketbook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR6B5CVOKIvO759-yxvZyXv3LHR_kjTk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
