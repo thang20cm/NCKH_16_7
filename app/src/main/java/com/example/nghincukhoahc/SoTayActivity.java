@@ -17,7 +17,7 @@ public class SoTayActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.sotay);
-
+        bottomNavigationView.setBackground(null);
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
