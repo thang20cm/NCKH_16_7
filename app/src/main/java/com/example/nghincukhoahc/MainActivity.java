@@ -1,19 +1,20 @@
 package com.example.nghincukhoahc;
 
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nghincukhoahc.activites.SignIn;
+import com.example.nghincukhoahc.activites.SignUp;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,14 +37,29 @@ public class MainActivity extends AppCompatActivity {
     MyAdapter adapter;
     SearchView searchView;
 
+    Calendar calendar;
+    SimpleDateFormat simpleDateFormat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
+        // Khi khởi tạo MainActivity, ẩn Button
+
+
+
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bangtin);
         bottomNavigationView.setBackground(null);
+
+
+
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bangtin) {
@@ -60,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         fab = findViewById(R.id.fab);
         searchView = findViewById(R.id.search);
+
         searchView.clearFocus();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 1);
@@ -75,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new MyAdapter(MainActivity.this, dataList);
         recyclerView.setAdapter(adapter);
+
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Bài Viết");
         dialog.show();
@@ -121,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button logoutButton = findViewById(R.id.logoutButton);
+        AppCompatImageView logoutButton = findViewById(R.id.logoutButton);
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // User clicked the "Có" button
                         // Start the LoginActivity
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(MainActivity.this, SignIn.class);
                         startActivity(intent);
                         finish(); // Close MainActivity
                     }
@@ -158,14 +180,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
     public void searchList(String text){
         ArrayList<DataClass> searchList = new ArrayList<>();
         for (DataClass dataClass: dataList){
-            if (dataClass.getDataTitle().toLowerCase().contains(text.toLowerCase())){
+            if (dataClass.getDataTitle().toLowerCase().contains(text.toLowerCase())||
+                    dataClass.getDataDesc().toLowerCase().contains(text.toLowerCase())||
+                    dataClass.getDataLang().toLowerCase().contains(text.toLowerCase())
+            ){
                 searchList.add(dataClass);
             }
         }
         adapter.searchDataList(searchList);
     }
+
+
+
+
+
 }

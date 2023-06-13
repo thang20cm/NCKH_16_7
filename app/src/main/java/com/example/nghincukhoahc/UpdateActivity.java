@@ -15,9 +15,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +33,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Calendar;
+
 public class UpdateActivity extends AppCompatActivity {
 
     ImageView updateImage;
@@ -43,15 +47,28 @@ public class UpdateActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     StorageReference storageReference;
 
+    boolean isImageSelected = false;
+    Spinner updateLangSpinner;
+
+    private ArrayAdapter<String> spinnerAdapter;
+    private String[] classArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
+        updateLangSpinner = findViewById(R.id.updateLangSpn);
+        classArray = getResources().getStringArray(R.array.upload_class_array);
+        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,classArray);
+        updateLangSpinner.setAdapter(spinnerAdapter);
+
+
+
         updateButton = findViewById(R.id.updateButton);
         updateDesc = findViewById(R.id.updateDesc);
         updateImage = findViewById(R.id.updateImage);
-        updateLang = findViewById(R.id.updateLang);
+//      updateLang = findViewById(R.id.updateLang);
         updateTitle = findViewById(R.id.updateTitle);
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -63,6 +80,7 @@ public class UpdateActivity extends AppCompatActivity {
                             Intent data = result.getData();
                             uri = data.getData();
                             updateImage.setImageURI(uri);
+                            isImageSelected = true;
                         } else {
                             Toast.makeText(UpdateActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
                         }
@@ -74,9 +92,22 @@ public class UpdateActivity extends AppCompatActivity {
             Glide.with(UpdateActivity.this).load(bundle.getString("Image")).into(updateImage);
             updateTitle.setText(bundle.getString("Title"));
             updateDesc.setText(bundle.getString("Description"));
-            updateLang.setText(bundle.getString("Language"));
+            //updateLang.setText(bundle.getString("Language"));
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
+
+            String currentDataLang = bundle.getString("Language");
+            String[] langueges = getResources().getStringArray(R.array.upload_class_array);
+            int selectionPosition = -1;
+            for(int i=0;i<langueges.length;i++){
+                if(langueges[i].equals(currentDataLang)){
+                    selectionPosition = i;
+                    break;
+                }
+            }
+            if(selectionPosition != -1){
+                updateLangSpinner.setSelection(selectionPosition);
+            }
         }
         databaseReference = FirebaseDatabase.getInstance().getReference("Bài Viết").child(key);
 
@@ -86,19 +117,34 @@ public class UpdateActivity extends AppCompatActivity {
                 Intent photoPicker = new Intent(Intent.ACTION_PICK);
                 photoPicker.setType("image/*");
                 activityResultLauncher.launch(photoPicker);
+
             }
         });
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
-                Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                startActivity(intent);
+                if (isInputValid()) {
+                    saveData();
+                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
+    private boolean isInputValid(){
+        title = updateTitle.getText().toString().trim();
+        desc = updateDesc.getText().toString().trim();
+        lang = updateLangSpinner.getSelectedItem().toString();
+
+        if(title.isEmpty()||desc.isEmpty()||lang.isEmpty()){
+            Toast.makeText(this,"Vui lòng điền đầy đủ thông tin",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    return true;
+    }
     public void saveData(){
-        storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
+
+        //storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
         builder.setCancelable(false);
@@ -106,39 +152,52 @@ public class UpdateActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri urlImage = uriTask.getResult();
-                imageUrl = urlImage.toString();
-                updateData();
-                dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-            }
-        });
-    }
+        if(isImageSelected){
+            storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
+            storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete());
+                    Uri urlImage = uriTask.getResult();
+                    imageUrl = urlImage.toString();
+                    updateData();
+                    dialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            imageUrl = oldImageURL;
+            updateData();
+            dialog.dismiss();
+        }
+        }
+
+
     public void updateData(){
+
         title = updateTitle.getText().toString().trim();
         desc = updateDesc.getText().toString().trim();
-        lang = updateLang.getText().toString();
+        lang = updateLangSpinner.getSelectedItem().toString();
 
-        DataClass dataClass = new DataClass(title, desc, lang, imageUrl);
+        DataClass dataClass = new DataClass(title, desc, lang, imageUrl,getCurrentDateTime());
 
         databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
-                    reference.delete();
-                    Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+                if (task.isSuccessful()) {
+                    if (isImageSelected) {
+                        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
+                        reference.delete();
+                    }
+                        Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -146,5 +205,8 @@ public class UpdateActivity extends AppCompatActivity {
                 Toast.makeText(UpdateActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private long getCurrentDateTime() {
+        return Calendar.getInstance().getTimeInMillis();
     }
 }

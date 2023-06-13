@@ -6,12 +6,18 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -37,10 +43,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+
+
+        //Sắp xếp theo time đăng bài giảm dần
+        Collections.sort(dataList, new Comparator<DataClass>() {
+            @Override
+            public int compare(DataClass data1, DataClass data2) {
+                return Long.compare(data2.getDateTime(),data1.getDateTime());
+            }
+        });
+
+
         Glide.with(context).load(dataList.get(position).getDataImage()).into(holder.recImage);
         holder.recTitle.setText(dataList.get(position).getDataTitle());
         holder.recDesc.setText(dataList.get(position).getDataDesc());
         holder.recLang.setText(dataList.get(position).getDataLang());
+        holder.recDateTime.setText(getFormattedDateTime(dataList.get(position).getDateTime()));
+
 
         holder.recCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +74,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -65,12 +86,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         dataList = searchList;
         notifyDataSetChanged();
     }
+    private String getFormattedDateTime(long dateTime) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date date = new Date(dateTime);
+        return dateFormat.format(date);
+    }
 }
 
 class MyViewHolder extends RecyclerView.ViewHolder{
 
     ImageView recImage;
-    TextView recTitle, recDesc, recLang;
+    TextView recTitle, recDesc, recLang,recDateTime;
     CardView recCard;
 
     public MyViewHolder(@NonNull View itemView) {
@@ -81,5 +107,6 @@ class MyViewHolder extends RecyclerView.ViewHolder{
         recDesc = itemView.findViewById(R.id.recDesc);
         recLang = itemView.findViewById(R.id.recLang);
         recTitle = itemView.findViewById(R.id.recTitle);
+        recDateTime = itemView.findViewById(R.id.recDateTime);
     }
 }

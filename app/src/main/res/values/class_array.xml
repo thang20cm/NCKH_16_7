@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="select_class">Chọn lớp học</string>
+    <string-array name="classes_array">
+        <item>K12THO1</item>
+        <item>K12THO2</item>
+        <item>K12THO3</item>
+        <!-- Thêm các lớp học khác vào đây -->
+    </string-array>
+</resources>

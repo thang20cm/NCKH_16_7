@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/bangtin"
+    <item android:id="@+id/bangtin_other"
         android:title="Bảng tin"
         android:icon="@drawable/baseline_newspaper_24"/>
 
-    <item android:id="@+id/sotay"
+    <item android:id="@+id/sotay_other"
         android:title="Sổ tay sinh viên"
         android:icon="@drawable/baseline_menu_book_24"/>
 </menu>

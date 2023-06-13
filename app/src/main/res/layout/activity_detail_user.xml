@@ -4,31 +4,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    >
     <ScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".DetailActivityUser">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/detailTitle"
-                android:text="Title"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:textSize="24sp"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:layout_marginBottom="12dp"
-                android:textColor="@color/lavender"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:src="@drawable/back_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+                <TextView
+                    app:layout_constraintTop_toBottomOf="@+id/backButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detailTitle"
+                    android:text="Tiêu đề"
+                    android:textSize="24sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintVertical_bias="0.5"
+                    tools:ignore="MissingConstraints" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:layout_width="300dp"
@@ -39,44 +54,76 @@
                 android:src="@drawable/baseline_file_upload_24"
                 android:scaleType="fitXY"/>
             <RelativeLayout
-
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-
-
-                >
-
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textViewTime"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="Thời gian đăng:"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_toRightOf="@id/textViewTime"
+                    android:layout_marginLeft="10dp"
+                    android:text="Time:"
+                    android:id="@+id/detailTime"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:textSize="18sp"
+                    android:id="@+id/textViewLop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Lớp:"/>
+                <TextView
+                    android:layout_toRightOf="@id/textViewLop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:padding="0dp"
-                    android:text="Hastag"
+                    android:text="Lớp"
                     android:layout_gravity="center"
                     android:id="@+id/detailLang"
                     android:textSize="18sp"
-                    android:textColor="@color/lavender"/>
+                    android:textColor="@color/white"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <TextView
-
+                    android:textSize="18sp"
+                    android:id="@+id/textViewNoiDung"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Nội dung:"/>
+                <TextView
+                    android:layout_below="@+id/textViewNoiDung"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:padding="20dp"
-
-                    android:text="Description"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Nội dung"
                     android:layout_gravity="center"
                     android:id="@+id/detailDesc"
                     android:textSize="18sp"
-                    android:textColor="@color/lavender"
-
+                    android:textColor="@color/white"
                     />
-
-
-
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

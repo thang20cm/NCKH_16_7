@@ -7,12 +7,25 @@
     android:background="@color/green"
     tools:context=".SoTayActivity">
 
+
+
+    <WebView
+        android:layout_width="match_parent"
+        android:id="@+id/webView"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="57dp">
+
+    </WebView>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Sổ tay page"
-        android:textSize="40dp"
+        android:autoLink="web"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/linkTextView"
+        android:visibility="gone"
+
         tools:ignore="MissingConstraints" />
     <com.google.android.material.bottomappbar.BottomAppBar
         android:layout_width="match_parent"

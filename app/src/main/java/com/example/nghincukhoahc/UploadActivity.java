@@ -15,9 +15,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +32,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringJoiner;
 
 public class UploadActivity extends AppCompatActivity {
 
@@ -39,16 +45,27 @@ public class UploadActivity extends AppCompatActivity {
     EditText uploadTopic, uploadDesc, uploadLang;
     String imageURL;
     Uri uri;
+    private static final int MAX_TITLE_WORDS = 40;
+
+Spinner uploadSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
+        String[] classArray = getResources().getStringArray(R.array.upload_class_array);
+        uploadSpinner = findViewById(R.id.uploadLangSpn);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,classArray);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        uploadSpinner.setAdapter(spinnerAdapter);
+
+
+
         uploadImage = findViewById(R.id.uploadImage);
         uploadDesc = findViewById(R.id.uploadDesc);
         uploadTopic = findViewById(R.id.uploadTopic);
-        uploadLang = findViewById(R.id.uploadLang);
+        //uploadLang = findViewById(R.id.uploadLang);
         saveButton = findViewById(R.id.saveButton);
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -79,11 +96,37 @@ public class UploadActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                if (isInputValid() && isImageSelected()) {
+                    saveData();
+                }
             }
         });
     }
+private boolean isInputValid(){
 
+
+        String title = uploadTopic.getText().toString();
+        String desc = uploadDesc.getText().toString();
+        String lang = uploadSpinner.getSelectedItem().toString();
+        if(title.isEmpty()||desc.isEmpty()||lang.isEmpty()){
+        Toast.makeText(UploadActivity.this,"Không được để trống",Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    int wordcount = title.length();
+    if(wordcount > MAX_TITLE_WORDS){
+        Toast.makeText(UploadActivity.this,"Tiêu đề quá dài,không được quá 40 từ",Toast.LENGTH_SHORT).show();
+        return false;
+    }
+    return true;
+}
+private boolean isImageSelected(){
+        if(uri == null){
+            Toast.makeText(UploadActivity.this,"Vui lòng chọn hình ảnh",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+}
     public void saveData(){
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh")
@@ -115,17 +158,24 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public void uploadData(){
+//
+
+//
 
         String title = uploadTopic.getText().toString();
         String desc = uploadDesc.getText().toString();
-        String lang = uploadLang.getText().toString();
+        String lang = uploadSpinner.getSelectedItem().toString();
 
-        DataClass dataClass = new DataClass(title, desc, lang, imageURL);
+
+
+
+        DataClass dataClass = new DataClass(title, desc, lang, imageURL,getCurrentDateTime());
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
         //We are changing the child from title to currentDate,
         // because we will be updating title as well and it may affect child value.
 
-        String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
 
         FirebaseDatabase.getInstance().getReference("Bài Viết").child(currentDate)
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -143,4 +193,8 @@ public class UploadActivity extends AppCompatActivity {
                     }
                 });
     }
+    private long getCurrentDateTime() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+
 }

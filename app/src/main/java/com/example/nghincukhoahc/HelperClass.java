@@ -7,6 +7,8 @@ public class HelperClass {
 
     String name, email, username, password;
 
+
+
     public String getName() {
         return name;
     }

@@ -1,3 +1,28 @@
 <resources>
+
     <string name="app_name">Nghiên Cứu Khoa Học</string>
+
+    <string-array name="upload_class_array">
+        <item>K12THO1</item>
+        <item>K12THO2</item>
+        <item>K12THO3</item>
+    </string-array>
+
+    <string-array name="lop_array">
+        <item>Tất cả</item>
+        <item>K12THO1</item>
+        <item>K12THO2</item>
+        <item>K12THO3</item>
+    </string-array>
+    <!-- Khai báo mảng cho các khoa -->
+
+    <!-- Khai báo mảng cho lớp trong khoa CNTT -->
+
+
+
+    <!-- Khai báo mảng mặc định khi chưa chọn khoa -->
+
+
+
+
 </resources>

@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserActivity">
-    <LinearLayout
+    android:background="@color/primary"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+            android:id="@+id/mainTop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="0dp"
+        >
+        <ImageView android:layout_height="40dp"
+            android:id="@+id/logoupt"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="180dp"
+            android:layout_width="wrap_content"
+            android:src="@drawable/logoupt"
+
+            />
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LOGOUT"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="0dp"
-            android:layout_centerHorizontal="true"/>
-    </LinearLayout>
+            android:src="@drawable/logout_icon"
+            android:padding="@dimen/_6sdp"
+            android:tint="@color/white"
+            android:drawableTint="@color/white"
+            android:background="@drawable/background_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            />
+
+    </RelativeLayout>
 
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/containerTop">
     <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,23 +52,69 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:id="@+id/search"
-        app:iconifiedByDefault="false"
         app:searchHintIcon="@null"
+        app:defaultQueryHint=""
         app:queryHint="Search..."
         android:focusable="false"
+        app:iconifiedByDefault="false"
         app:closeIcon="@drawable/baseline_clear_24"
         app:searchIcon="@drawable/baseline_search_24"
-        android:background="@drawable/lavender_border"/>
+        android:background="@drawable/searchview_background" />
 
+<!--    <Spinner-->
+<!--        android:background="@drawable/background_spinner"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_marginTop="@dimen/_6sdp"-->
+<!--        android:layout_marginStart="12dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/search"-->
+<!--        android:entries="@array/lop_array"-->
+<!--        android:id="@+id/spinnerSearchClass"-->
+<!--        />-->
+</RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:layout_below="@id/search"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView"
-        android:scrollbars="vertical"/>
+        android:layout_marginTop="20dp"
+        >
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="105dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerView"
+            android:scrollbars="vertical"/>
 
 
 
-</RelativeLayout>
+    </LinearLayout>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomAppBar"
+        android:layout_gravity="bottom"
+        app:fabCradleMargin="10dp"
+        android:background="@android:color/transparent"
+        app:fabCradleRoundedCornerRadius="50dp"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNavigationView"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="center"
+            app:labelVisibilityMode="labeled"
+            android:background="@android:color/transparent"
+            app:menu="@menu/bottom_menu_user"
+            />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

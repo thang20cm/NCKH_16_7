@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "411716103874",
+    "firebase_url": "https://nckh-java-default-rtdb.firebaseio.com",
     "project_id": "nckh-java",
     "storage_bucket": "nckh-java.appspot.com"
   },
