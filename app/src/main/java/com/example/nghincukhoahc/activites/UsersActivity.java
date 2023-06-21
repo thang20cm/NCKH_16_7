@@ -4,11 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.nghincukhoahc.UserActivity;
 import com.example.nghincukhoahc.adapters.UserAdapter;
 import com.example.nghincukhoahc.databinding.ActivityUsersBinding;
 import com.example.nghincukhoahc.listeners.UserListener;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.User;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -92,4 +91,5 @@ public class UsersActivity extends BaseActivity implements UserListener {
         startActivity(intent);
         finish();
     }
+
 }

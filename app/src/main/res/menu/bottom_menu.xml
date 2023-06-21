@@ -9,9 +9,9 @@
         android:title=""
         android:enabled="false"/>
 
-    <item android:id="@+id/sotay"
-        android:title="Sổ tay sinh viên"
-        android:icon="@drawable/baseline_menu_book_24"/>
+    <item android:id="@+id/quanlyAdmin"
+        android:title="Quản lý Admin"
+        android:icon="@drawable/manage_admin"/>
 
 
 

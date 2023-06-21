@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nghincukhoahc.databinding.ItemContainerRecentConversionBinding;
 import com.example.nghincukhoahc.listeners.ConversionListener;
-import com.example.nghincukhoahc.models.ChatMessage;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.ChatMessage;
+import com.example.nghincukhoahc.listeners.models.User;
 
 import java.util.List;
 

@@ -33,7 +33,7 @@ public class XemSau extends AppCompatActivity {
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.xemsau);
+        bottomNavigationView.setSelectedItemId(R.id.chat);
         bottomNavigationView.setBackground(null);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -47,7 +47,7 @@ public class XemSau extends AppCompatActivity {
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;
-            } else if (item.getItemId() == R.id.xemsau) {
+            } else if (item.getItemId() == R.id.chat) {
 
                 return true;
             } else if (item.getItemId() == R.id.xemdiem) {

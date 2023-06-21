@@ -2,6 +2,7 @@ package com.example.nghincukhoahc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,7 +15,10 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.nghincukhoahc.activites.ChatActivity;
+import com.example.nghincukhoahc.activites.MainActivity;
 import com.example.nghincukhoahc.activites.SignIn;
+import com.example.nghincukhoahc.activites.UsersActivity;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,9 +28,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +52,8 @@ public class UserActivity extends AppCompatActivity {
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
     private PreferenceManager preferenceManager;
+    CollectionReference collectionReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +62,10 @@ public class UserActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
 
-       BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        String userClass = preferenceManager.getString(Constants.KEY_CLASS);
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bangtin_user);
         bottomNavigationView.setBackground(null);
 
@@ -68,8 +79,8 @@ public class UserActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;
-            } else if (item.getItemId() == R.id.xemsau) {
-                startActivity(new Intent(getApplicationContext(), XemSau.class));
+            } else if (item.getItemId() == R.id.chat) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;
@@ -101,28 +112,27 @@ public class UserActivity extends AppCompatActivity {
         adapter = new MyAdapterUser(UserActivity.this, dataList);
         recyclerView.setAdapter(adapter);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Bài Viết");
-        dialog.show();
-        eventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                dataList.clear();
-                for (DataSnapshot itemSnapshot: snapshot.getChildren()){
-                    DataClass dataClass = itemSnapshot.getValue(DataClass.class);
-                    dataClass.setKey(itemSnapshot.getKey());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        collectionReference = db.collection("Bài Viết");
+
+        collectionReference.addSnapshotListener((value, error) -> {
+            if(error != null){
+                dialog.dismiss();
+                return;
+            }
+            dataList.clear();
+            for (QueryDocumentSnapshot document : value) {
+                DataClass dataClass = document.toObject(DataClass.class);
+                if(dataClass.getDataLang().equals(userClass)){
+                    dataClass.setKey(document.getId());
                     dataList.add(dataClass);
                 }
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                dialog.dismiss();
-            }
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
         });
-//
-//
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -177,19 +187,19 @@ public class UserActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> showToast("unable to sign out"));
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //preferenceManager.clear(); // Xóa hết dữ liệu của tài khoản hiện tại khi thoát ứng dụng
+    }
+
 
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
-    private List<DataClass> filterUserByClass(List<DataClass> userList, String className) {
-        List<DataClass> filteredList = new ArrayList<>();
-        for (DataClass user : userList) {
-            if (user.getDataLang().equals(className)) {
-                filteredList.add(user);
-            }
-        }
-        return filteredList;
-    }
+
+
+
 
 
 }

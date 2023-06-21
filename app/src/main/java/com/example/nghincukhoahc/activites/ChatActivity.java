@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import com.example.nghincukhoahc.adapters.ChatAdapter;
 import com.example.nghincukhoahc.databinding.ActivityChatBinding;
-import com.example.nghincukhoahc.models.ChatMessage;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.ChatMessage;
+import com.example.nghincukhoahc.listeners.models.User;
 import com.example.nghincukhoahc.network.ApiClient;
 import com.example.nghincukhoahc.network.ApiService;
 import com.example.nghincukhoahc.utilities.Constants;

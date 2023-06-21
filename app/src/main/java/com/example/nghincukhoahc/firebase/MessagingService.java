@@ -13,7 +13,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.nghincukhoahc.R;
 import com.example.nghincukhoahc.activites.ChatActivity;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.User;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -45,7 +45,7 @@ public class MessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(Constants.KEY_USER,user);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,channelId);
         builder.setSmallIcon(R.drawable.round_notifications_24);

@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_24sdp"
         android:layout_marginRight="@dimen/_24sdp"
-        android:layout_marginBottom="@dimen/_40sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/add_btn"
         android:backgroundTint="@color/primary"

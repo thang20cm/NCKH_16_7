@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".activites.DetailManagerAdmin">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:src="@drawable/back_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:id="@+id/detailImageAdmin"
+                android:padding="8dp"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_file_upload_24"
+                android:scaleType="fitXY"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textViewNameAdmin"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="Tên:"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/textViewNameAdmin"
+                    android:layout_marginLeft="10dp"
+                    android:text="Tên admin"
+                    android:id="@+id/nameAdmin"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:textSize="18sp"
+                    android:id="@+id/textViewLop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Email:"/>
+                <TextView
+                    android:layout_toRightOf="@id/textViewLop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="0dp"
+                    android:text="emailAdmin"
+                    android:layout_gravity="center"
+                    android:id="@+id/emailAdmin"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="18sp"
+                    android:id="@+id/textViewNoiDung"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Mật khẩu:"/>
+                <TextView
+                    android:layout_toRightOf="@+id/textViewNoiDung"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Mật khẩu"
+                    android:layout_gravity="center"
+                    android:id="@+id/passwordAdmin"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="18sp"
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Lớp quản trị:"/>
+                <TextView
+                    android:layout_toRightOf="@+id/textView"
+                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:id="@+id/classSpn"
+                    android:entries="@array/class_list"
+                    />
+
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="18sp"
+                    android:id="@+id/textViewQTC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:text="Lớp quản trị:"/>
+                <TextView
+                    android:layout_toRightOf="@+id/textViewQTC"
+                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_marginStart="@dimen/_16sdp"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:id="@+id/QuyenTruyCap"
+                    android:entries="@array/class_list"
+                    />
+
+
+
+            </RelativeLayout>
+          <Button
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/EditAdminBtn"
+              android:layout_marginTop="@dimen/_20sdp"
+              android:layout_gravity="center"
+              android:text="Chỉnh sửa">
+
+          </Button>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

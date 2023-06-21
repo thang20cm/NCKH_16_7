@@ -5,11 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.example.nghincukhoahc.R;
 import com.example.nghincukhoahc.SoTayForSinhVien;
@@ -18,11 +15,10 @@ import com.example.nghincukhoahc.XemDiem;
 import com.example.nghincukhoahc.adapters.RecentConverationsAdapter;
 import com.example.nghincukhoahc.databinding.ActivityMainChatBinding;
 import com.example.nghincukhoahc.listeners.ConversionListener;
-import com.example.nghincukhoahc.models.ChatMessage;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.ChatMessage;
+import com.example.nghincukhoahc.listeners.models.User;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -59,7 +55,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         listenConversations();
 
         binding.bottomNavigationView.setBackground(null);
-        binding.bottomNavigationView.setSelectedItemId(R.id.xemsau);
+        binding.bottomNavigationView.setSelectedItemId(R.id.chat);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item ->{
             if(item.getItemId() == R.id.bangtin_user){
@@ -73,7 +69,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                 finish();
                 return true;
             }
-            else if(item.getItemId() == R.id.xemsau){
+            else if(item.getItemId() == R.id.chat){
                 return true;
             }
             else if(item.getItemId() == R.id.xemdiem){
@@ -204,5 +200,11 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
         intent.putExtra(Constants.KEY_USER,user);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 }

@@ -41,7 +41,7 @@ public class SoTayForSinhVien extends AppCompatActivity {
             } else if (item.getItemId() == R.id.sotay_user) {
 
                 return true;
-            } else if (item.getItemId() == R.id.xemsau) {
+            } else if (item.getItemId() == R.id.chat) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
@@ -56,6 +56,12 @@ public class SoTayForSinhVien extends AppCompatActivity {
             return false;
         });
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.nghincukhoahc.models;
+package com.example.nghincukhoahc.listeners.models;
 
 import java.util.Date;
 

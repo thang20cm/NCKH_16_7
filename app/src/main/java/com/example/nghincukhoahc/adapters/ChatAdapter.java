@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nghincukhoahc.databinding.ItemContainerReceivedMessageBinding;
 import com.example.nghincukhoahc.databinding.ItemContainerSentMessageBinding;
-import com.example.nghincukhoahc.models.ChatMessage;
+import com.example.nghincukhoahc.listeners.models.ChatMessage;
 
 import java.util.List;
 

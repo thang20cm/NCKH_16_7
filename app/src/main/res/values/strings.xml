@@ -14,15 +14,27 @@
         <item>K12THO2</item>
         <item>K12THO3</item>
     </string-array>
+
+    <string-array name="class_list">
+        <item>K12THO1</item>
+        <item>K12THO2</item>
+        <item>K12THO3</item>
+        <!-- Thêm các lớp học khác -->
+    </string-array>
+
+    <string-array name="quyentruycap_array">
+        <item>Enable</item>
+        <item>Disable</item>
+
+        <!-- Thêm các lớp học khác -->
+    </string-array>
+
     <!-- Khai báo mảng cho các khoa -->
 
     <!-- Khai báo mảng cho lớp trong khoa CNTT -->
 
 
-
     <!-- Khai báo mảng mặc định khi chưa chọn khoa -->
-
-
 
 
 </resources>

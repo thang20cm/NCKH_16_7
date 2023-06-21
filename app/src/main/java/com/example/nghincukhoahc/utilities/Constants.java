@@ -3,7 +3,18 @@ package com.example.nghincukhoahc.utilities;
 import java.util.HashMap;
 
 public class Constants {
+    public static final int PICK_IMAGE_REQUEST_CODE = 1;
+    public static final String KEY_FROM_MAIN_ACTIVITY = "from_main_activity";
+
+    public static final String KEY_REMEMBER_ME = "remember_me";
+    public static final String KEY_STATUS = "QuyenTruyCap";
     public static final String KEY_COLLECTION_USERS = "users";
+    public static final String KEY_COLLECTION_ADMIN = "adminclass";
+    public static final String KEY_SUBCOLLECTION_ADMIN = "adminstatus";
+    public static final String KEY_REMEMBER_LOGIN = "remember_login";
+    public static final String KEY_USER_TYPE = "usertype";
+
+    public static final String KEY_COLLECTION_SUPER_ADMIN = "superadmin";
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";

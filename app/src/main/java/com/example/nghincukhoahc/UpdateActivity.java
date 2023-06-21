@@ -1,7 +1,5 @@
 package com.example.nghincukhoahc;
 
-
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,8 +25,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,16 +38,15 @@ public class UpdateActivity extends AppCompatActivity {
 
     ImageView updateImage;
     Button updateButton;
-    EditText updateDesc, updateTitle, updateLang;
+    EditText updateDesc, updateTitle;
     String title, desc, lang;
     String imageUrl;
     String key, oldImageURL;
     Uri uri;
-    DatabaseReference databaseReference;
-    StorageReference storageReference;
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    DocumentReference documentReference;
 
     boolean isImageSelected = false;
-    Spinner updateLangSpinner;
 
     private ArrayAdapter<String> spinnerAdapter;
     private String[] classArray;
@@ -58,28 +56,26 @@ public class UpdateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update);
 
-        updateLangSpinner = findViewById(R.id.updateLangSpn);
-        classArray = getResources().getStringArray(R.array.upload_class_array);
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,classArray);
-        updateLangSpinner.setAdapter(spinnerAdapter);
-
-
-
+        updateImage = findViewById(R.id.updateImage);
         updateButton = findViewById(R.id.updateButton);
         updateDesc = findViewById(R.id.updateDesc);
-        updateImage = findViewById(R.id.updateImage);
-//      updateLang = findViewById(R.id.updateLang);
         updateTitle = findViewById(R.id.updateTitle);
+
+        classArray = getResources().getStringArray(R.array.upload_class_array);
+        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArray);
+
+        Spinner updateLangSpinner = findViewById(R.id.updateLangSpn);
+        updateLangSpinner.setAdapter(spinnerAdapter);
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
+                        if (result.getResultCode() == Activity.RESULT_OK) {
                             Intent data = result.getData();
                             uri = data.getData();
-                            updateImage.setImageURI(uri);
+                            Glide.with(UpdateActivity.this).load(uri).into(updateImage);
                             isImageSelected = true;
                         } else {
                             Toast.makeText(UpdateActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
@@ -87,29 +83,21 @@ public class UpdateActivity extends AppCompatActivity {
                     }
                 }
         );
+
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             Glide.with(UpdateActivity.this).load(bundle.getString("Image")).into(updateImage);
             updateTitle.setText(bundle.getString("Title"));
             updateDesc.setText(bundle.getString("Description"));
-            //updateLang.setText(bundle.getString("Language"));
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
 
             String currentDataLang = bundle.getString("Language");
-            String[] langueges = getResources().getStringArray(R.array.upload_class_array);
-            int selectionPosition = -1;
-            for(int i=0;i<langueges.length;i++){
-                if(langueges[i].equals(currentDataLang)){
-                    selectionPosition = i;
-                    break;
-                }
-            }
-            if(selectionPosition != -1){
+            int selectionPosition = spinnerAdapter.getPosition(currentDataLang);
+            if (selectionPosition != -1) {
                 updateLangSpinner.setSelection(selectionPosition);
             }
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference("Bài Viết").child(key);
 
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,34 +105,33 @@ public class UpdateActivity extends AppCompatActivity {
                 Intent photoPicker = new Intent(Intent.ACTION_PICK);
                 photoPicker.setType("image/*");
                 activityResultLauncher.launch(photoPicker);
-
             }
         });
+
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isInputValid()) {
                     saveData();
-                    Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
-                    startActivity(intent);
                 }
             }
         });
     }
-    private boolean isInputValid(){
+
+    private boolean isInputValid() {
         title = updateTitle.getText().toString().trim();
         desc = updateDesc.getText().toString().trim();
-        lang = updateLangSpinner.getSelectedItem().toString();
+        lang = ((Spinner) findViewById(R.id.updateLangSpn)).getSelectedItem().toString();
 
-        if(title.isEmpty()||desc.isEmpty()||lang.isEmpty()){
-            Toast.makeText(this,"Vui lòng điền đầy đủ thông tin",Toast.LENGTH_SHORT).show();
+        if (title.isEmpty() || desc.isEmpty() || lang.isEmpty()) {
+            Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return false;
         }
-    return true;
+        return true;
     }
-    public void saveData(){
 
-        //storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
+    public void saveData() {
+        documentReference = firestore.collection("Bài Viết").document(key);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
         builder.setCancelable(false);
@@ -152,60 +139,64 @@ public class UpdateActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        if(isImageSelected){
-            storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
-            storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isComplete());
-                    Uri urlImage = uriTask.getResult();
-                    imageUrl = urlImage.toString();
-                    updateData();
-                    dialog.dismiss();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    dialog.dismiss();
-                }
-            });
+        if (isImageSelected) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Hình Ảnh").child(uri.getLastPathSegment());
+            storageReference.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            uriTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    imageUrl = uri.toString();
+                                    updateData(dialog);
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            dialog.dismiss();
+                            Toast.makeText(UpdateActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             imageUrl = oldImageURL;
-            updateData();
-            dialog.dismiss();
+            updateData(dialog);
         }
-        }
+    }
 
-
-    public void updateData(){
-
+    public void updateData(AlertDialog dialog) {
         title = updateTitle.getText().toString().trim();
         desc = updateDesc.getText().toString().trim();
-        lang = updateLangSpinner.getSelectedItem().toString();
+        lang = ((Spinner) findViewById(R.id.updateLangSpn)).getSelectedItem().toString();
 
-        DataClass dataClass = new DataClass(title, desc, lang, imageUrl,getCurrentDateTime());
+        DataClass dataClass = new DataClass(title, desc, lang, imageUrl, getCurrentDateTime());
 
-        databaseReference.setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    if (isImageSelected) {
-                        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
-                        reference.delete();
+        documentReference.set(dataClass, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            if (isImageSelected) {
+                                StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
+                                reference.delete();
+                            }
+                            Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            Toast.makeText(UpdateActivity.this, "Update failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
                     }
-                        Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UpdateActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                });
     }
+
     private long getCurrentDateTime() {
         return Calendar.getInstance().getTimeInMillis();
     }

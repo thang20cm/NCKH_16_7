@@ -16,12 +16,11 @@
         android:layout_marginTop="0dp"
         >
         <TextView android:layout_height="wrap_content"
-            android:id="@+id/logoupt"
+            android:id="@+id/adminClass"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
-            android:text="Bảng Tin"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -95,7 +94,7 @@
             android:layout_gravity="center"
             app:labelVisibilityMode="labeled"
             android:background="@android:color/transparent"
-            app:menu="@menu/bottom_menu"
+            app:menu="@menu/buttom_menu_admin_lower"
             />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
@@ -107,7 +106,8 @@
         android:backgroundTint="@color/white"
         app:tint = "@color/primary"
         android:src="@drawable/baseline_add_24"
-        app:layout_anchor="@id/bottomAppBar"/>
+        app:layout_anchor="@id/bottomAppBar"
+        />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

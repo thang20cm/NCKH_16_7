@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nghincukhoahc.databinding.ItemContainerUserBinding;
 import com.example.nghincukhoahc.listeners.UserListener;
-import com.example.nghincukhoahc.models.User;
+import com.example.nghincukhoahc.listeners.models.User;
 
 import java.util.List;
 

@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -166,6 +167,7 @@ private boolean isImageSelected(){
         String desc = uploadDesc.getText().toString();
         String lang = uploadSpinner.getSelectedItem().toString();
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
 
@@ -177,19 +179,19 @@ private boolean isImageSelected(){
 
 
 
-        FirebaseDatabase.getInstance().getReference("Bài Viết").child(currentDate)
-                .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("Bài Viết").document(currentDate)
+                .set(dataClass)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                })
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UploadActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UploadActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

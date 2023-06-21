@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.nghincukhoahc.activites.SignIn;
+
 public class SplashScreen extends AppCompatActivity {
 
     @Override
@@ -17,7 +19,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run(){
                 try {
                     sleep(1000);
-                    startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+                    startActivity(new Intent(SplashScreen.this, SignIn.class));
                 }
                 catch (Exception e){
 

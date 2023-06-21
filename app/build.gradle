@@ -9,7 +9,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.nghincukhoahc"
-        minSdk 31
+        minSdk 24
+        //noinspection ExpiredTargetSdkVersion
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -74,4 +75,7 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+
+
 }
