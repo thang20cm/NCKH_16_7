@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyAdapterUser extends RecyclerView.Adapter<MyViewHolderUser> {
+public class MyAdapterAdmin extends RecyclerView.Adapter<MyViewHolderAdmin> {
 
     private Context context;
     private List<DataClass> dataList;
@@ -39,7 +39,7 @@ public class MyAdapterUser extends RecyclerView.Adapter<MyViewHolderUser> {
 
 
 
-    public MyAdapterUser(Context context, List<DataClass> dataList) {
+    public MyAdapterAdmin(Context context, List<DataClass> dataList) {
         this.context = context;
         this.dataList = dataList;
 
@@ -47,12 +47,12 @@ public class MyAdapterUser extends RecyclerView.Adapter<MyViewHolderUser> {
 
     @NonNull
     @Override
-    public MyViewHolderUser onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolderAdmin onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
-        return new MyViewHolderUser(view);
+        return new MyViewHolderAdmin(view);
     }
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolderUser holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolderAdmin holder, int position) {
 
         DataClass data = dataList.get(position);
 
@@ -81,7 +81,7 @@ public class MyAdapterUser extends RecyclerView.Adapter<MyViewHolderUser> {
         holder.recCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailActivityUser.class);
+                Intent intent = new Intent(context, DetailActivityAdmin.class);
                 intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
                 intent.putExtra("File", dataList.get(holder.getAdapterPosition()).getDataFile());
                 intent.putExtra("Description", dataList.get(holder.getAdapterPosition()).getDataDesc());
@@ -120,7 +120,7 @@ public class MyAdapterUser extends RecyclerView.Adapter<MyViewHolderUser> {
 }
 
 
-class MyViewHolderUser extends RecyclerView.ViewHolder{
+class MyViewHolderAdmin extends RecyclerView.ViewHolder{
 
 
 
@@ -130,7 +130,7 @@ class MyViewHolderUser extends RecyclerView.ViewHolder{
 
 
 
-    public MyViewHolderUser(@NonNull View itemView) {
+    public MyViewHolderAdmin(@NonNull View itemView) {
 
         super(itemView);
 

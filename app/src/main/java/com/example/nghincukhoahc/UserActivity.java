@@ -54,6 +54,9 @@ public class UserActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     CollectionReference collectionReference;
 
+    private boolean showAllPosts = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class UserActivity extends AppCompatActivity {
         setListeners();
 
         String userClass = preferenceManager.getString(Constants.KEY_CLASS);
+        if (userClass.equals("Tất cả")) {
+            showAllPosts = true;
+        }
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -123,7 +129,7 @@ public class UserActivity extends AppCompatActivity {
             dataList.clear();
             for (QueryDocumentSnapshot document : value) {
                 DataClass dataClass = document.toObject(DataClass.class);
-                if(dataClass.getDataLang().equals(userClass)){
+                if(showAllPosts||dataClass.getDataLang().equals("Tất cả")||dataClass.getDataLang().equals(userClass)){
                     dataClass.setKey(document.getId());
                     dataList.add(dataClass);
                 }

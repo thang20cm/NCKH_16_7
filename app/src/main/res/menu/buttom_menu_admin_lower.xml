@@ -9,9 +9,9 @@
         android:title=""
         android:enabled="false"/>
 
-    <item android:id="@+id/chatadmin"
-        android:title="Chat"
-        android:icon="@drawable/baseline_menu_book_24"/>
+    <item android:id="@+id/managerSV"
+        android:title="Quản Lý Sinh Viên"
+        android:icon="@drawable/baseline_person_24"/>
 
 
 

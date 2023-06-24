@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -12,35 +11,30 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nghincukhoahc.activites.AdminChat;
-import com.example.nghincukhoahc.activites.ManagerAdmin;
+import com.example.nghincukhoahc.activites.ManagerUser;
 import com.example.nghincukhoahc.activites.SignIn;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
-import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,37 +46,55 @@ public class MainActivity extends AppCompatActivity {
     ValueEventListener eventListener;
     RecyclerView recyclerView;
     List<DataClass> dataList;
-    MyAdapter adapter;
+    MyAdapterAdmin adapter;
     SearchView searchView;
 
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
     CollectionReference collectionReference;
-    private String adminClass;
+    private String adminClass,adminStatus;
     PreferenceManager preferenceManager;
+    private DocumentSnapshot documentSnapshot;
+    private TextView textViewAdminClass;
+    private Task<QuerySnapshot> task;
 
-   private TextView textViewAdminClass;
+    ArrayList<DataClass> dataClasses = new ArrayList<>();
+    private boolean showAllPosts = false;
+    String userClass,name,userId,email,status,image;
 
-   ArrayList<DataClass> dataClasses = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
+        fetchUserDataAndUpdatePreferences();
 
-        String userId = preferenceManager.getString(Constants.KEY_USER_ID);
-        String email = preferenceManager.getString(Constants.KEY_EMAIL);
-        String name = preferenceManager.getString(Constants.KEY_NAME);
-        String image = preferenceManager.getString(Constants.KEY_IMAGE);
 
-        textViewAdminClass = findViewById(R.id.adminClass);
-        textViewAdminClass.setText(name);
+        userClass = preferenceManager.getString(Constants.KEY_CLASS);
+        if (userClass.equals("Tất cả")) {
+            showAllPosts = true;
+        }
 
-        adminClass = preferenceManager.getString(Constants.KEY_CLASS);
-        Toast.makeText(MainActivity.this,"Class is: "+adminClass,Toast.LENGTH_SHORT).show();
+
+//        email = preferenceManager.getString(Constants.KEY_EMAIL);
+//        name = preferenceManager.getString(Constants.KEY_NAME);
+//        image = preferenceManager.getString(Constants.KEY_IMAGE);
+//        status = preferenceManager.getString(Constants.KEY_STATUS);
+
+
+
+
+
+
+
+
+
+        //Toast.makeText(MainActivity.this,"Class is: "+adminClass,Toast.LENGTH_SHORT).show();
 
 
 
@@ -99,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.bangtin) {
                 return true;
             }
-            else if(item.getItemId() == R.id.chatadmin){
-                startActivity(new Intent(getApplicationContext(), AdminChat.class));
+            else if(item.getItemId() == R.id.managerSV){
+                startActivity(new Intent(getApplicationContext(), ManagerUser.class));
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;
@@ -127,29 +139,33 @@ public class MainActivity extends AppCompatActivity {
 
         dataList = new ArrayList<>();
 
-        adapter = new MyAdapter(MainActivity.this, dataList);
+        adapter = new MyAdapterAdmin(MainActivity.this, dataList);
         recyclerView.setAdapter(adapter);
+
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Bài Viết");
         collectionReference.addSnapshotListener((value, error) -> {
-            if(error != null){
-                dialog.dismiss();
+            if (error != null) {
+                // Xử lý lỗi
                 return;
             }
-//            dataList.clear();
-            for(DocumentChange dc : value.getDocumentChanges()){
+
+            dataList.clear(); // Xóa danh sách hiện tại để cập nhật dữ liệu mới
+
+            for (DocumentChange dc : value.getDocumentChanges()) {
                 DataClass dataClass = dc.getDocument().toObject(DataClass.class);
                 dataClass.setKey(dc.getDocument().getId());
-                if(dataClass.getDataLang().equals(adminClass)){
-                    switch (dc.getType()){
+                if (dataClass.getDataLang().equals(adminClass) || showAllPosts || dataClass.getDataLang().equals("Tất cả")) {
+                    switch (dc.getType()) {
                         case ADDED:
                             dataList.add(dataClass);
                             break;
                         case MODIFIED:
                             int index = getIndexByKey(dataClass.getKey());
-                            if(index != -1){
-                                dataList.set(index,dataClass);
+                            if (index != -1) {
+                                dataList.set(index, dataClass);
                             }
                             break;
                         case REMOVED:
@@ -157,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
-
             }
+
+
             adapter.notifyDataSetChanged();
             dialog.dismiss();
         });
-
 
 
 
@@ -191,41 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
         AppCompatImageView logoutButton = findViewById(R.id.logoutButton);
 
-//        logoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Create an AlertDialog.Builder object
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//
-//                // Set the message for the AlertDialog
-//                builder.setMessage("Bạn có chắc chắn muốn đăng xuất?");
-//
-//                // Set the positive button for the AlertDialog
-//                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // User clicked the "Có" button
-//                        // Start the LoginActivity
-//                        Intent intent = new Intent(MainActivity.this, SignIn.class);
-//                        startActivity(intent);
-//                        finish(); // Close MainActivity
-//                    }
-//                });
-//
-//                // Set the negative button for the AlertDialog
-//                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // User clicked the "Không" button
-//                        // Do nothing and dismiss the AlertDialog
-//                    }
-//                });
-//
-//                // Create and show the AlertDialog
-//                AlertDialog dialog = builder.create();
-//                dialog.show();
-//            }
-//        });
 
 
     }
@@ -275,12 +256,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        //preferenceManager.clear();
 
-        //preferenceManager.clear(); // Xóa hết dữ liệu của tài khoản hiện tại khi thoát ứng dụng
     }
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+    }
+
+    private void fetchUserDataAndUpdatePreferences(){
+        FirebaseFirestore dbnew = FirebaseFirestore.getInstance();
+        userId = preferenceManager.getString(Constants.KEY_USER_ID);
+        DocumentReference userRef = dbnew.collection(Constants.KEY_COLLECTION_ADMIN).document(userId);
+        userRef.get().addOnSuccessListener(documentSnapshot ->{
+            if(documentSnapshot.exists()){
+                String newName = documentSnapshot.getString(Constants.KEY_NAME);
+                String newEmail = documentSnapshot.getString(Constants.KEY_EMAIL);
+                String newClass = documentSnapshot.getString(Constants.KEY_CLASS);
+                String newStatus = documentSnapshot.getString(Constants.KEY_STATUS);
+
+                preferenceManager.putString(Constants.KEY_NAME,newName);
+                preferenceManager.putString(Constants.KEY_EMAIL,newEmail);
+                preferenceManager.putString(Constants.KEY_CLASS,newClass);
+                preferenceManager.putString(Constants.KEY_STATUS,newStatus);
+
+                textViewAdminClass = findViewById(R.id.adminClass);
+                textViewAdminClass.setText(newName);
+                Toast.makeText(MainActivity.this,"Name is: "+newStatus,Toast.LENGTH_SHORT).show();
+
+                preferenceManager.apply();
+                Toast.makeText(MainActivity.this, "Name is: " + newName, Toast.LENGTH_SHORT).show();
+                if (newStatus.equals("Disable")) {
+                    startActivity(new Intent(getApplicationContext(), ChoXetDuyet.class));
+                    finish();
+                }
+            }else {
+                Toast.makeText(MainActivity.this, "User document not found", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(MainActivity.this, "Error retrieving user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 }

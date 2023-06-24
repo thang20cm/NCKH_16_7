@@ -94,6 +94,7 @@ public class ChoXetDuyet extends AppCompatActivity {
                                 } else {
                                     // Hiển thị thông báo trạng thái chưa chuyển sang "Enable"
                                     Toast.makeText(ChoXetDuyet.this, "Trạng thái Disable", Toast.LENGTH_SHORT).show();
+                                    preferenceManager.putString(Constants.KEY_STATUS, "Disable");
                                 }
                             }
                         }
@@ -104,7 +105,6 @@ public class ChoXetDuyet extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         preferenceManager.clear(); // Xóa hết dữ liệu của tài khoản hiện tại khi thoát ứng dụng
     }
     @Override

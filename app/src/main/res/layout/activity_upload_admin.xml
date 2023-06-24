@@ -100,7 +100,6 @@
                 android:id="@+id/uploadTopic"
                 android:background="@drawable/lavender_border"
                 android:padding="16dp"
-
                 android:gravity="start|center_vertical"
                 android:textColor="@color/lavender"/>
             <TextView
@@ -135,6 +134,48 @@
                 android:textColor="@color/lavender"
                 android:visibility="gone"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:textSize="20dp"
+                android:textColor="@color/primary"
+                android:text="Upload File"/>
+
+
+
+
+                        <Button
+                android:id="@+id/uploadFileButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tải lên File" />
+            <LinearLayout
+                android:id="@+id/borderUploadFile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background_import_file"
+               >
+                <ImageView
+                    android:id="@+id/uploadFileIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/df"
+                    />
+
+                <TextView
+                    android:id="@+id/selectedFileTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
+
+
+
 
             <Button
                 android:layout_width="match_parent"

@@ -40,7 +40,7 @@ public class UpdateActivity extends AppCompatActivity {
     Button updateButton;
     EditText updateDesc, updateTitle;
     String title, desc, lang;
-    String imageUrl;
+    String imageUrl,fileUrl;
     String key, oldImageURL;
     Uri uri;
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -173,7 +173,7 @@ public class UpdateActivity extends AppCompatActivity {
         desc = updateDesc.getText().toString().trim();
         lang = ((Spinner) findViewById(R.id.updateLangSpn)).getSelectedItem().toString();
 
-        DataClass dataClass = new DataClass(title, desc, lang, imageUrl, getCurrentDateTime());
+        DataClass dataClass = new DataClass(title, desc, lang, imageUrl,fileUrl, getCurrentDateTime());
 
         documentReference.set(dataClass, SetOptions.merge())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

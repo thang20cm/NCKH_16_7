@@ -4,11 +4,20 @@ package com.example.nghincukhoahc;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,11 +43,23 @@ import java.util.Date;
 
 public class DetailActivity extends AppCompatActivity {
 
-    TextView detailDesc, detailTitle, detailLang,detailDateTime;
+    TextView detailDesc, detailTitle, detailLang,detailDateTime,detailFileAdmin,textViewFile;
     ImageView detailImage,backbutton;
     FloatingActionButton deleteButton, editButton;
     String key = "";
-    String imageUrl = "";
+    String imageUrl = "",fileUrl="";
+    Button downloadButton;
+    private static final String ACTION_DOWNLOAD_COMPLETE = "com.example.nghincukhoahc.ACTION_DOWNLOAD_COMPLETE";
+    BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action != null && action.equals(ACTION_DOWNLOAD_COMPLETE)) {
+                Toast.makeText(DetailActivity.this, "Download Completed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
 
 
 
@@ -49,8 +70,12 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        IntentFilter downloadCompleteIntentFilter = new IntentFilter(ACTION_DOWNLOAD_COMPLETE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(downloadCompleteReceiver, downloadCompleteIntentFilter);
 
-    backbutton = findViewById(R.id.backButton);
+
+
+        backbutton = findViewById(R.id.backButton);
     backbutton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -65,6 +90,18 @@ public class DetailActivity extends AppCompatActivity {
         editButton = findViewById(R.id.editButton);
         detailLang = findViewById(R.id.detailLang);
         detailDateTime = findViewById(R.id.detailTime);
+        textViewFile = findViewById(R.id.textViewFile);
+
+        detailFileAdmin = findViewById(R.id.detailFileAdmin);
+        downloadButton = findViewById(R.id.downloadButton);
+
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadFile(fileUrl);
+            }
+        });
+
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
@@ -74,6 +111,19 @@ public class DetailActivity extends AppCompatActivity {
             key = bundle.getString("Key");
             imageUrl = bundle.getString("Image");
             Glide.with(this).load(bundle.getString("Image")).into(detailImage);
+
+            fileUrl = bundle.getString("File");
+            if(fileUrl != null && !fileUrl.isEmpty()){
+                String fileName = getFileNameFromUrl(fileUrl);
+                detailFileAdmin.setText(fileName);
+                detailFileAdmin.setVisibility(View.VISIBLE);
+                downloadButton.setVisibility(View.VISIBLE);
+            }
+            else {
+                detailFileAdmin.setVisibility(View.GONE);
+                downloadButton.setVisibility(View.GONE);
+                textViewFile.setVisibility(View.GONE);
+            }
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference documentReference = db.collection("Bài Viết").document(key);
@@ -110,7 +160,7 @@ public class DetailActivity extends AppCompatActivity {
                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                            @Override
                            public void onSuccess(Void unused) {
-                               Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                               Intent intent = new Intent(DetailActivity.this, MainActivitySuperAdmin.class);
                                startActivity(intent);
                                finish();
                                deleteImageAndFinish();
@@ -162,5 +212,56 @@ public class DetailActivity extends AppCompatActivity {
                 Toast.makeText(DetailActivity.this, "Delete Failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String getFileNameFromUrl(String url) {
+        String decodedUrl = Uri.decode(url);
+        int startIndex = decodedUrl.lastIndexOf("/") + 1;
+        int endIndex = decodedUrl.indexOf("?alt=media");
+        if (endIndex == -1) {
+            endIndex = decodedUrl.length();
+        }
+        String fileNameWithExtension = decodedUrl.substring(startIndex, endIndex);
+        int extensionIndex = fileNameWithExtension.lastIndexOf(".");
+        String fileName;
+        if (extensionIndex != -1) {
+            fileName = fileNameWithExtension.substring(0, extensionIndex);
+        } else {
+            fileName = fileNameWithExtension;
+        }
+
+        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (fileExtension != null) {
+            return fileName + "." + fileExtension;
+        } else {
+            return fileName;
+        }
+    }
+
+    private void downloadFile(String fileUrl) {
+        try {
+            Uri uri = Uri.parse(fileUrl);
+            String fileName = getFileNameFromUrl(fileUrl);
+
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+            downloadManager.enqueue(request);
+
+            LocalBroadcastManager.getInstance(DetailActivity.this).sendBroadcast(new Intent(ACTION_DOWNLOAD_COMPLETE));
+
+
+            Toast.makeText(DetailActivity.this, "Downloading...", Toast.LENGTH_SHORT).show();
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(DetailActivity.this, "Download Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadCompleteReceiver);
     }
 }

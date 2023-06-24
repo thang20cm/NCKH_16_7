@@ -56,6 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
 
         Glide.with(context).load(dataList.get(position).getDataImage()).into(holder.recImage);
+        holder.recFile.setText(dataList.get(position).getDataFile());
         holder.recTitle.setText(dataList.get(position).getDataTitle());
         holder.recDesc.setText(dataList.get(position).getDataDesc());
         holder.recLang.setText(dataList.get(position).getDataLang());
@@ -67,6 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra("Image", dataList.get(holder.getAdapterPosition()).getDataImage());
+                intent.putExtra("File", dataList.get(holder.getAdapterPosition()).getDataFile());
                 intent.putExtra("Description", dataList.get(holder.getAdapterPosition()).getDataDesc());
                 intent.putExtra("Title", dataList.get(holder.getAdapterPosition()).getDataTitle());
                 intent.putExtra("Key",dataList.get(holder.getAdapterPosition()).getKey());
@@ -96,13 +98,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 class MyViewHolder extends RecyclerView.ViewHolder{
 
     ImageView recImage;
-    TextView recTitle, recDesc, recLang,recDateTime;
+    TextView recTitle, recDesc, recLang,recDateTime,recFile;
     CardView recCard;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
         recImage = itemView.findViewById(R.id.recImage);
+        recFile = itemView.findViewById(R.id.recFile);
         recCard = itemView.findViewById(R.id.recCard);
         recDesc = itemView.findViewById(R.id.recDesc);
         recLang = itemView.findViewById(R.id.recLang);

@@ -125,6 +125,34 @@
                     android:textColor="@color/white"
                     />
             </RelativeLayout>
+            <TextView
+                android:textSize="18sp"
+                android:id="@+id/textViewFile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:text="File:"/>
+            <TextView
+                android:id="@+id/detailFileAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_download_file"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13ssp"
+                android:text="abcd.pdf"/>
+            <Button
+                android:id="@+id/downloadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/primary"
+                android:text="Download"
+                android:layout_below="@id/detailFileAdmin"
+                android:layout_centerHorizontal="true"/>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

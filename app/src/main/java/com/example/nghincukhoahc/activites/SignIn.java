@@ -132,16 +132,20 @@ public class SignIn extends AppCompatActivity {
                             preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,true);
                             preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
                             preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
                             preferenceManager.putString(Constants.KEY_CLASS, documentSnapshot.getString(Constants.KEY_CLASS));
                             preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         } else {
                             preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                             preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
                             preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
                             preferenceManager.putString(Constants.KEY_CLASS, documentSnapshot.getString(Constants.KEY_CLASS));
                             preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
                             startActivity(new Intent(getApplicationContext(), ChoXetDuyet.class));
                             finish();
                         }

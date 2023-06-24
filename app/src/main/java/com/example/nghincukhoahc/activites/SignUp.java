@@ -15,13 +15,22 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nghincukhoahc.ChoXetDuyet;
+import com.example.nghincukhoahc.ChoXetDuyetUser;
 import com.example.nghincukhoahc.MainActivity;
+import com.example.nghincukhoahc.R;
 import com.example.nghincukhoahc.UserActivity;
+import com.example.nghincukhoahc.databinding.ActivitySignUpAdminBinding;
 import com.example.nghincukhoahc.databinding.ActivitySignUpChatBinding;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -30,7 +39,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SignUp extends AppCompatActivity {
-    private ActivitySignUpChatBinding binding;
+    private ActivitySignUpAdminBinding binding;
     private PreferenceManager preferenceManager;
     private String encodedImage;
 
@@ -39,13 +48,26 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUpChatBinding.inflate(getLayoutInflater());
+        binding = ActivitySignUpAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
+        }
+        boolean isSignedIn = preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN);
+        String adminStatus = preferenceManager.getString(Constants.KEY_STATUS);
+        if(isSignedIn && adminStatus != null) {
+            if (adminStatus.equals("Enable")) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), ChoXetDuyetUser.class);
+                startActivity(intent);
+                finish();
+            }
         }
         setListeners();
     }
@@ -118,8 +140,6 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-
-
     private void signUp() {
         loading(true);
 
@@ -129,6 +149,7 @@ public class SignUp extends AppCompatActivity {
         String password = binding.inputPassword.getText().toString();
 
         HashMap<String, Object> user = new HashMap<>();
+        user.put(Constants.KEY_STATUS, "Disable");
         user.put(Constants.KEY_NAME, name);
         user.put(Constants.KEY_EMAIL, email);
         user.put(Constants.KEY_PASSWORD, password);
@@ -138,15 +159,18 @@ public class SignUp extends AppCompatActivity {
         db.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
+
                     loading(false);
                     preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                     preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
                     preferenceManager.putString(Constants.KEY_NAME, name);
                     preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
-                    Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ChoXetDuyetUser.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    preferenceManager.putString(Constants.KEY_CLASS, selectedClass);
                     startActivity(intent);
+                    String adminId = documentReference.getId();
+                    checkAdminStatus(adminId);
+                    preferenceManager.putString(Constants.KEY_CLASS, selectedClass);
                 })
                 .addOnFailureListener(exception -> {
                     loading(false);
@@ -221,4 +245,45 @@ public class SignUp extends AppCompatActivity {
             binding.buttonSingUp.setVisibility(View.VISIBLE);
         }
     }
+
+
+    private void checkAdminStatus(String adminId) {
+        db.collection(Constants.KEY_COLLECTION_ADMIN)
+                .document(adminId)
+                .collection(Constants.KEY_SUBCOLLECTION_ADMIN)
+                .document(Constants.KEY_STATUS)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String status = documentSnapshot.getString(Constants.KEY_STATUS);
+                            if (status != null && status.equals("Enable")) {
+                                // Điều hướng giao diện MainActivity
+                                preferenceManager.putString(Constants.KEY_STATUS, status); // Lưu trạng thái admin
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                preferenceManager.putString(Constants.KEY_STATUS, status);
+                                // Điều hướng giao diện chờ xét duyệt (WaitingApprovalActivity)
+                                Intent intent = new Intent(getApplicationContext(), ChoXetDuyetUser.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Xử lý lỗi
+
+                    }
+                });
+
+    }
+
+
 }
+

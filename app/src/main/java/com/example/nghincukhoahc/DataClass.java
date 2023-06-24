@@ -13,6 +13,7 @@ public class DataClass {
     private String dataDesc;
     private String dataLang;
     private String dataImage;
+    private String dataFile;
     private long dateTime;
 
 
@@ -32,7 +33,13 @@ public class DataClass {
         this.key = key;
     }
 
+    public String getDataFile() {
+        return dataFile;
+    }
 
+    public void setDataFile(String dataFile) {
+        this.dataFile = dataFile;
+    }
 
     public String getDataTitle() {
         return dataTitle;
@@ -53,12 +60,13 @@ public class DataClass {
         return dateTime;
     }
 
-    public DataClass(String dataTitle, String dataDesc, String dataLang, String dataImage,long dateTime) {
+    public DataClass(String dataTitle, String dataDesc, String dataLang, String dataImage,String dataFile,long dateTime) {
 
         this.dataTitle = dataTitle;
         this.dataDesc = dataDesc;
         this.dataLang = dataLang;
         this.dataImage = dataImage;
+        this.dataFile = dataFile;
         this.dateTime = dateTime;
 
     }

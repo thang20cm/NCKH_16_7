@@ -3,6 +3,7 @@
     <string name="app_name">Nghiên Cứu Khoa Học</string>
 
     <string-array name="upload_class_array">
+        <item>Tất cả</item>
         <item>K12THO1</item>
         <item>K12THO2</item>
         <item>K12THO3</item>
@@ -28,6 +29,9 @@
 
         <!-- Thêm các lớp học khác -->
     </string-array>
+
+    <string name="selected_file_count">Số tệp đã chọn: %d</string>
+
 
     <!-- Khai báo mảng cho các khoa -->
 

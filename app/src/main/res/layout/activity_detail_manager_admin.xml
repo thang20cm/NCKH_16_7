@@ -148,7 +148,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
-                    android:text="Lớp quản trị:"/>
+                    android:text="Quyền truy cập:"/>
                 <TextView
                     android:layout_toRightOf="@+id/textViewQTC"
                     android:layout_height="wrap_content"

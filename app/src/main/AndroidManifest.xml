@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,13 +17,36 @@
         android:theme="@style/Theme.StoreDataRealtime"
         tools:targetApi="31">
         <activity
-            android:name=".activites.AdminChatActivity"
+            android:name=".ChoXetDuyetUser"
+            android:exported="false" />
+        <activity
+            android:name=".activites.UpdateUserManager"
+            android:exported="false" />
+        <activity
+            android:name=".activites.DetailManagerUser"
+            android:exported="false" />
+        <activity
+            android:name=".activites.ManagerUser"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.nghincukhoahc.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".UpdateAcitivityAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".DetailActivityAdmin"
             android:exported="false" />
         <activity
             android:name=".UploadAdmin"
-            android:exported="false" />
-        <activity
-            android:name=".activites.AdminChat"
             android:exported="false" /> <!-- <activity android:name=".SplashScreen" -->
         <!-- android:exported="true"> -->
         <!--  -->

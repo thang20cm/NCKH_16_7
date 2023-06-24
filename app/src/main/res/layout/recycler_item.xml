@@ -87,6 +87,21 @@
             android:visibility="gone"
             />
 
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/recFile"
+            android:text="desc"
+            android:textColor="@color/lavender"
+            android:textSize="14sp"
+            android:layout_toEndOf="@id/recImage"
+            android:layout_below="@id/recTitle"
+            android:layout_marginStart="20dp"
+            android:maxLines="1"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone"
+            />
+
 
 
 
