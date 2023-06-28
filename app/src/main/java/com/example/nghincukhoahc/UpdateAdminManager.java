@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.nghincukhoahc.activites.DetailManagerAdmin;
 import com.example.nghincukhoahc.activites.ManagerAdmin;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,10 +27,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.io.ByteArrayOutputStream;
+
 public class UpdateAdminManager extends AppCompatActivity {
 
     private EditText updateNameadmin, updateEmailadmin, updatePasswordadmin;
-    private ImageView updateImgAdmin;
+    private ImageView updateImgAdmin,backbtn;
     private Spinner updateClassadmin;
     private ArrayAdapter<String> spinnerAdapter,spinnerAdapterQTC;
     private String[] classArray,classArrayQTC;
@@ -44,6 +48,7 @@ public class UpdateAdminManager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_admin_manager);
+
 
 
         updateAdminBtn = findViewById(R.id.saveAdminBtn);
@@ -64,6 +69,37 @@ public class UpdateAdminManager extends AppCompatActivity {
 
         updateClassadmin.setAdapter(spinnerAdapter);
         updateQuentruycap.setAdapter(spinnerAdapterQTC);
+
+        backbtn = findViewById(R.id.backButton);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                updateImgAdmin.setDrawingCacheEnabled(true);
+                updateImgAdmin.buildDrawingCache();
+                Bitmap bitmap = updateImgAdmin.getDrawingCache();
+
+                // Chuyển đổi bitmap thành base64 string
+                String base64Image = convertBitmapToBase64(bitmap);
+
+                // Chuyển đổi bitmap thành base64 string
+                // Chuyển đổi bitmap thành base64 string
+                Intent intent = new Intent(UpdateAdminManager.this,DetailManagerAdmin.class);
+                intent.putExtra(Constants.KEY_NAME, updateNameadmin.getText().toString());
+                intent.putExtra(Constants.KEY_EMAIL, updateEmailadmin.getText().toString());
+                intent.putExtra(Constants.KEY_PASSWORD, updatePasswordadmin.getText().toString());
+                intent.putExtra(Constants.KEY_CLASS, updateClassadmin.getSelectedItem().toString());
+                intent.putExtra(Constants.KEY_STATUS, updateQuentruycap.getSelectedItem().toString());
+
+
+                intent.putExtra(Constants.KEY_IMAGE, base64Image);
+
+                setResult(RESULT_OK, intent);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -113,6 +149,12 @@ public class UpdateAdminManager extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+    private String convertBitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     private void updateAdminData() {

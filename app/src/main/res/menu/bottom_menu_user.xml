@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/bangtin_user"
         android:title="Bảng tin"
-        android:icon="@drawable/baseline_newspaper_24"/>
+        android:icon="@drawable/home_nckh"
+
+      />
 
     <item android:id="@+id/sotay_user"
         android:title="Sổ tay sinh viên"
-        android:icon="@drawable/baseline_menu_book_24"/>
+        android:icon="@drawable/handbook_nckh"
+
+/>
 
 
     <item android:id="@+id/chat"
         android:title="Chat"
-        android:icon="@drawable/baseline_chat_24"/>
+        android:icon="@drawable/trochuyen_nckh"
+
+ />
 
     <item android:id="@+id/xemdiem"
         android:title="Xem điểm"
-        android:icon="@drawable/baseline_groups_24"/>
+        android:icon="@drawable/test_score"
+  />
 </menu>

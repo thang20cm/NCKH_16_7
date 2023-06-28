@@ -33,7 +33,8 @@ public class XemDiem extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        String url = "https://qldt.upt.edu.vn/";
+       String url = "https://qldt.upt.edu.vn/";
+
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);

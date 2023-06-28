@@ -9,14 +9,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -60,11 +64,28 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
     CollectionReference collectionReference;
     private String adminClass;
     PreferenceManager preferenceManager;
+    private static final int REQUEST_PERMISSION_CODE = 1;
+    private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_super_admin);
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            // Kiểm tra xem hộp thoại yêu cầu cấp quyền đã hiển thị trước đó hay chưa
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSIONS[0])) {
+                // Hộp thoại yêu cầu cấp quyền đã hiển thị trước đó và người dùng từ chối
+                // Hiển thị thông báo giải thích và yêu cầu cấp quyền một lần nữa
+                showPermissionExplanationDialog();
+            } else {
+                // Hiển thị hộp thoại yêu cầu cấp quyền
+                ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+            }
+        } else {
+            // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+            // ...
+        }
 
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
@@ -196,20 +217,23 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
     }
     private void singOut(){
         showToast("Signing out...");
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_SUPER_ADMIN).document(
-                        preferenceManager.getString(Constants.KEY_USER_ID)
-                );
-        HashMap<String, Object> updates = new HashMap<>();
-        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
-        documentReference.update(updates)
-                .addOnSuccessListener(unused -> {
-                    preferenceManager.clear();
-                    startActivity(new Intent(getApplicationContext(), SignIn.class));
-                    finish();
-                })
-                .addOnFailureListener(e -> showToast("unable to sign out"));
+        startActivity(new Intent(getApplicationContext(), SignIn.class));
+        preferenceManager.clear();
+//        showToast("Signing out...");
+//        FirebaseFirestore database = FirebaseFirestore.getInstance();
+//        DocumentReference documentReference =
+//                database.collection(Constants.KEY_COLLECTION_SUPER_ADMIN).document(
+//                        preferenceManager.getString(Constants.KEY_USER_ID)
+//                );
+//        HashMap<String, Object> updates = new HashMap<>();
+//        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+//        documentReference.update(updates)
+//                .addOnSuccessListener(unused -> {
+//                    preferenceManager.clear();
+//                    startActivity(new Intent(getApplicationContext(), SignIn.class));
+//                    finish();
+//                })
+//                .addOnFailureListener(e -> showToast("unable to sign out"));
     }
 
 
@@ -223,6 +247,41 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
     private void showToast(String message){
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
+
+    private boolean hasPermissions(Context context, String... permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+                // ...
+            } else {
+                // Người dùng từ chối cấp quyền, bạn có thể hiển thị thông báo hoặc thực hiện các xử lý phù hợp
+                Toast.makeText(this, "Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void showPermissionExplanationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quyền truy cập bộ nhớ ngoài");
+        builder.setMessage("Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file. Vui lòng cấp quyền để tiếp tục.");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Hiển thị hộp thoại yêu cầu cấp quyền
+            ActivityCompat.requestPermissions(MainActivitySuperAdmin.this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+
 
 }
 

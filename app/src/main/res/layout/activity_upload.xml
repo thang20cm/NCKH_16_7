@@ -32,13 +32,29 @@
                 android:textAlignment="center"
                 android:textColor="@color/primary"/>
 
-            <ImageView
+            <FrameLayout
+                android:id="@+id/layoutImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/photo"
-                android:id="@+id/uploadImage"
-                android:layout_marginTop="10dp"
-                android:scaleType="fitCenter"/>
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/uploadImage"
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/background_image_upload"
+                    android:scaleType="centerCrop"
+                    app:riv_oval="true"/>
+                <TextView
+                    android:id="@+id/textAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/gallery"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/_20ssp"
+                    android:textStyle="bold"/>
+
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,11 +64,49 @@
                 android:layout_marginStart="10dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"/>
-            <Spinner
-                android:layout_width="120dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_spinner"
-                android:id="@+id/uploadLangSpn"/>
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_10sdp">
+                <TextView
+                    android:id="@+id/textViewlopQuanTri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn khoa"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/spinnerClass"/>
+                <Spinner
+                    android:id="@+id/spinnerKhoa"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/khoa_array"
+                    android:prompt="@string/select_khoa"
+                    android:background="@drawable/background_spinner"
+                    android:spinnerMode="dropdown"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn lớp"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/spinnerClass"/>
+                <Spinner
+                    android:id="@+id/uploadLangSpn"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/classes_array"
+                    android:background="@drawable/background_spinner"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewlopQuanTri"
+                    />
+            </LinearLayout>
 <!--            <EditText-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="50dp"-->
@@ -62,41 +116,51 @@
 <!--                android:padding="10dp"-->
 <!--                android:gravity="start|center_vertical"-->
 <!--                android:textColor="@color/lavender"/>-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nhập tiêu đề (không quá 40 từ)"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:textColor="@color/primary"/>
-            <EditText
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/uploadTopic"
-                android:background="@drawable/lavender_border"
-                android:padding="16dp"
-
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nhập nội dung"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:textColor="@color/primary"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="40"
+                    android:hint="Tiêu đề"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/uploadTopic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
 
-            <EditText
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:id="@+id/uploadDesc"
-                android:background="@drawable/lavender_border"
-                android:padding="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nội dung"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/uploadDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                android:gravity="start|top"
-                android:textColor="@color/lavender"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <EditText
@@ -116,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"
                 android:text="Upload File"/>

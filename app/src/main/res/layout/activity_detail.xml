@@ -47,22 +47,27 @@
                     tools:ignore="MissingConstraints" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="200dp"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:id="@+id/detailImage"
                 android:padding="8dp"
                 android:layout_gravity="center"
                 android:src="@drawable/baseline_file_upload_24"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                app:riv_corner_radius="@dimen/_10sdp"
+                />
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
                 <TextView
                     android:id="@+id/textViewTime"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"
@@ -71,7 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/textViewTime"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginEnd="25dp"
                     android:text="Time:"
                     android:id="@+id/detailTime"
                     android:textSize="18sp"
@@ -80,7 +86,8 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <TextView
                     android:textSize="18sp"
                     android:id="@+id/textViewLop"
@@ -104,13 +111,14 @@
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
                 <TextView
                     android:textSize="18sp"
                     android:id="@+id/textViewNoiDung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:text="Nội dung:"/>
@@ -118,8 +126,8 @@
                     android:layout_below="@+id/textViewNoiDung"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
                     android:text="Nội dung"
                     android:layout_gravity="center"
                     android:id="@+id/detailDesc"
@@ -132,7 +140,8 @@
                 android:id="@+id/textViewFile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
                 android:textColor="@color/red"
                 android:textStyle="bold"
                 android:text="File:"/>
@@ -141,7 +150,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_download_file"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"
                 android:text="abcd.pdf"/>
@@ -150,11 +159,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:textColor="@color/primary"
                 android:text="Download"
                 android:layout_below="@id/detailFileAdmin"
                 android:layout_centerHorizontal="true"/>
+
         </LinearLayout>
     </ScrollView>
     <com.github.clans.fab.FloatingActionMenu

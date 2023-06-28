@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:padding="@dimen/_24sdp"
     android:scrollbars="none"
+    android:padding="@dimen/_24sdp"
     tools:context=".activites.SignIn">
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +15,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <TextView
+            android:fontFamily="@font/font_valera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
@@ -23,6 +24,7 @@
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold"/>
         <TextView
+            android:fontFamily="@font/font_valera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
@@ -30,41 +32,63 @@
             android:textColor="@color/secondary_text"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"/>
-        <EditText
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_40sdp">
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/textinputEmailLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:textColorHint="#B6B6B6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:fontFamily="@font/font_valera"
             android:id="@+id/inputEmail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:background="@drawable/background_input"
-            android:hint="Email"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp"/>
-        <EditText
-            android:id="@+id/inputPassword"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@drawable/background_input"
-            android:hint="Password"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp"/>
+            android:layout_height="wrap_content" />
 
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+           >
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textinputPWLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#B6B6B6"
+                android:hint="Password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:fontFamily="@font/font_valera"
+                    android:id="@+id/inputPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <TextView
+            android:fontFamily="@font/font_valera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
+            android:textColor="@color/primary_text"
             android:text="Đăng nhập với tư cách"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
@@ -76,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <RadioButton
+                    android:fontFamily="@font/font_valera"
                     android:id="@+id/radioButtonStudent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,17 +108,19 @@
                     android:layout_weight="1"/>
 
                 <RadioButton
+                    android:fontFamily="@font/font_valera"
                     android:id="@+id/radioButtonAdmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Admin"
+                    android:text="Lớp trưởng"
                     android:layout_weight="1"/>
 
                 <RadioButton
+                    android:fontFamily="@font/font_valera"
                     android:id="@+id/radioButtonSuperAdmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SuperAdmin"
+                    android:text="Quản trị viên"
                     android:layout_weight="1"/>
             </RadioGroup>
 
@@ -108,10 +135,11 @@
 
 
             <com.google.android.material.button.MaterialButton
+                android:fontFamily="@font/font_valera"
                 android:id="@+id/buttonSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
-                android:text="Sign In"
+                android:text="Đăng nhập"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
@@ -127,20 +155,22 @@
 
 
         <TextView
+            android:fontFamily="@font/font_valera"
             android:id="@+id/textCreateAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:text="Create New Account"
+            android:text="Tạo tài khoản sinh viên"
             android:textColor="@color/primary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold"/>
         <TextView
+            android:fontFamily="@font/font_valera"
             android:id="@+id/textCreateAccountAdmin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:text="Create New Account For Admin"
+            android:text="Tạo tài khoản lớp trưởng"
             android:textColor="@color/primary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold"/>

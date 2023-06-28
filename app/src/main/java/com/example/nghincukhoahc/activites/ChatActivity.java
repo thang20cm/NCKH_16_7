@@ -304,4 +304,13 @@ public class ChatActivity extends BaseActivity {
         super.onResume();
         listenAvailabilityOfReceiver();
     }
+    @Override
+    public void onBackPressed() {
+        // Xử lý hành vi khi nút "Trở về" được bấm
+        // Ví dụ: Trở về trang trước đó trong ứng dụng
+        // Kiểm tra điều kiện để quyết định hành động cụ thể
+
+        // Gọi super.onBackPressed() để giữ lại hành vi mặc định của nút "Trở về"
+        super.onBackPressed();
+    }
 }

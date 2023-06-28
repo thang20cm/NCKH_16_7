@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,7 +22,6 @@ import com.example.nghincukhoahc.MainActivity;
 import com.example.nghincukhoahc.R;
 import com.example.nghincukhoahc.UserActivity;
 import com.example.nghincukhoahc.databinding.ActivitySignUpAdminBinding;
-import com.example.nghincukhoahc.databinding.ActivitySignUpChatBinding;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,6 +50,46 @@ public class SignUpAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.spinnerKhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedKhoa = parent.getItemAtPosition(position).toString();
+//                if(selectedKhoa.equals("Chọn khoa")){
+//                    binding.spinnerClass.setEnabled(false);
+//                    binding.spinnerClass.setSelection(0);
+//                    Toast.makeText(SignUp.this,"Vui lòng chọn khoa",Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    binding.spinnerClass.setEnabled(true);
+//                }
+                int lopArrayResId = 0;
+
+                if(selectedKhoa.equals("CNTT")){
+                    lopArrayResId = R.array.lop_cntt_array;
+                }
+                else if(selectedKhoa.equals("KS")){
+                    lopArrayResId = R.array.lop_ks_array;
+                }
+
+                String[] lopArray = getResources().getStringArray(lopArrayResId);
+
+                // Cập nhật danh sách lớp cho Spinner lớp
+                ArrayAdapter<String> lopAdapter = new ArrayAdapter<>(SignUpAdmin.this, android.R.layout.simple_spinner_item, lopArray);
+                binding.spinnerClass.setAdapter(lopAdapter);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);

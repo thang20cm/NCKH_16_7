@@ -8,12 +8,7 @@
     android:overScrollMode="never"
     android:padding="@dimen/_24sdp"
     android:scrollbars="none"
-    tools:context=".activites.SignUpAdmin">
-
-
-
-
-
+    tools:context=".activites.SignUp">
 
 
     <LinearLayout
@@ -27,7 +22,7 @@
             android:fontFamily="@font/font_valera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tạo tài khoản lớp trưởng"
+            android:text="Tạo tài khoản sinh viên"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold"/>
@@ -61,36 +56,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp">
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textinputNameLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Tên"
-            android:textColorHint="#b6b6b6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <com.google.android.material.textfield.TextInputEditText
-                android:fontFamily="@font/font_valera"
-                android:id="@+id/inputName"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textinputNameLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Tên"
+                android:textColorHint="#B6B6B6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:fontFamily="@font/font_valera"
+                    android:id="@+id/inputName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-           >
+            >
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHint="#B6B6B6"
                 android:hint="Email"
-                android:textColorHint="#b6b6b6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -112,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mật khẩu"
-                android:textColorHint="#b6b6b6"
+                android:textColorHint="#B6B6B6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -134,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nhập lại mật khẩu"
-                android:textColorHint="#b6b6b6"
+                android:textColorHint="#B6B6B6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

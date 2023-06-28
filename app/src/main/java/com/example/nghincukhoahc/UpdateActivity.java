@@ -8,16 +8,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -36,7 +39,8 @@ import java.util.Calendar;
 
 public class UpdateActivity extends AppCompatActivity {
 
-    ImageView updateImage;
+    TextView textViewAddAddImage;
+    ImageView updateImage,backbtn;
     Button updateButton;
     EditText updateDesc, updateTitle;
     String title, desc, lang;
@@ -51,6 +55,10 @@ public class UpdateActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerAdapter;
     private String[] classArray;
 
+    private boolean isDataChanged = false;
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +68,16 @@ public class UpdateActivity extends AppCompatActivity {
         updateButton = findViewById(R.id.updateButton);
         updateDesc = findViewById(R.id.updateDesc);
         updateTitle = findViewById(R.id.updateTitle);
+        textViewAddAddImage = findViewById(R.id.textAddImage);
+        backbtn = findViewById(R.id.backButton);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
 
         classArray = getResources().getStringArray(R.array.upload_class_array);
         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArray);
@@ -67,12 +85,15 @@ public class UpdateActivity extends AppCompatActivity {
         Spinner updateLangSpinner = findViewById(R.id.updateLangSpn);
         updateLangSpinner.setAdapter(spinnerAdapter);
 
+
+
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+                            textViewAddAddImage.setVisibility(View.GONE);
                             Intent data = result.getData();
                             uri = data.getData();
                             Glide.with(UpdateActivity.this).load(uri).into(updateImage);
@@ -105,6 +126,7 @@ public class UpdateActivity extends AppCompatActivity {
                 Intent photoPicker = new Intent(Intent.ACTION_PICK);
                 photoPicker.setType("image/*");
                 activityResultLauncher.launch(photoPicker);
+                isImageSelected = true;
             }
         });
 
@@ -127,10 +149,21 @@ public class UpdateActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return false;
         }
+        // Kiểm tra xem liệu dữ liệu đã thay đổi hay chưa
+        if (title.equals(getIntent().getStringExtra("Title")) &&
+                desc.equals(getIntent().getStringExtra("Description")) &&
+                lang.equals(getIntent().getStringExtra("Language")) &&
+                !isImageSelected) {
+            Toast.makeText(UpdateActivity.this, "Không có sự thay đổi trong dữ liệu", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 
     public void saveData() {
+
+
         documentReference = firestore.collection("Bài Viết").document(key);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateActivity.this);
@@ -185,7 +218,7 @@ public class UpdateActivity extends AppCompatActivity {
                                 reference.delete();
                             }
                             Toast.makeText(UpdateActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(UpdateActivity.this, MainActivity.class);
+                            Intent intent = new Intent(UpdateActivity.this, MainActivitySuperAdmin.class);
                             startActivity(intent);
                             finish();
 

@@ -7,6 +7,8 @@
         <item>K12THO1</item>
         <item>K12THO2</item>
         <item>K12THO3</item>
+        <item>K12THO4</item>
+        <item>K12THO5</item>
     </string-array>
 
     <string-array name="lop_array">
@@ -14,12 +16,16 @@
         <item>K12THO1</item>
         <item>K12THO2</item>
         <item>K12THO3</item>
+        <item>K12THO4</item>
+        <item>K12THO5</item>
     </string-array>
 
     <string-array name="class_list">
         <item>K12THO1</item>
         <item>K12THO2</item>
         <item>K12THO3</item>
+        <item>K12THO4</item>
+        <item>K12THO5</item>
         <!-- Thêm các lớp học khác -->
     </string-array>
 
@@ -31,6 +37,12 @@
     </string-array>
 
     <string name="selected_file_count">Số tệp đã chọn: %d</string>
+
+    <style name="CustomFontStyle">
+        <item name="android:fontFamily">@font/font_valera</item>
+    </style>
+
+
 
 
     <!-- Khai báo mảng cho các khoa -->

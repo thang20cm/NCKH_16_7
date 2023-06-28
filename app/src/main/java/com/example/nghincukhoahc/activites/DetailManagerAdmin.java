@@ -47,7 +47,6 @@ public class DetailManagerAdmin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailManagerAdmin.this, ManagerAdmin.class);
-
                 startActivity(intent);
                 finish();
             }
@@ -150,7 +149,15 @@ public class DetailManagerAdmin extends AppCompatActivity {
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+    @Override
+    public void onBackPressed() {
+        // Xử lý hành vi khi nút "Trở về" được bấm
+        // Ví dụ: Trở về trang trước đó trong ứng dụng
+        // Kiểm tra điều kiện để quyết định hành động cụ thể
 
+        // Gọi super.onBackPressed() để giữ lại hành vi mặc định của nút "Trở về"
+        super.onBackPressed();
+    }
 
 
 }

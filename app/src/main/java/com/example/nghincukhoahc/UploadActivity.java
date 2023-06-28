@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.nghincukhoahc.activites.SignUp;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,18 +65,61 @@ public class UploadActivity extends AppCompatActivity {
     PreferenceManager preferenceManager;
     String adminClass;
 
-    Spinner uploadSpinner;
+    Spinner uploadSpinner,spinnerKhoa;
 
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
+
+
         String[] classArray = getResources().getStringArray(R.array.upload_class_array);
         uploadSpinner = findViewById(R.id.uploadLangSpn);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,classArray);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        uploadSpinner.setAdapter(spinnerAdapter);
+        spinnerKhoa = findViewById(R.id.spinnerKhoa);
+//        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,classArray);
+//        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        uploadSpinner.setAdapter(spinnerAdapter);
+
+        spinnerKhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedKhoa = parent.getItemAtPosition(position).toString();
+//                if(selectedKhoa.equals("Chọn khoa")){
+//                    binding.spinnerClass.setEnabled(false);
+//                    binding.spinnerClass.setSelection(0);
+//                    Toast.makeText(SignUp.this,"Vui lòng chọn khoa",Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    binding.spinnerClass.setEnabled(true);
+//                }
+                int lopArrayResId = 0;
+
+                if(selectedKhoa.equals("CNTT")){
+                    lopArrayResId = R.array.lop_cntt_array;
+                }
+                else if(selectedKhoa.equals("KS")){
+                    lopArrayResId = R.array.lop_ks_array;
+                }
+
+                String[] lopArray = getResources().getStringArray(lopArrayResId);
+
+                // Cập nhật danh sách lớp cho Spinner lớp
+                ArrayAdapter<String> lopAdapter = new ArrayAdapter<>(UploadActivity.this, android.R.layout.simple_spinner_item, lopArray);
+                uploadSpinner.setAdapter(lopAdapter);
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 
@@ -84,6 +130,7 @@ public class UploadActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveButton);
 
         textViewAddFile = findViewById(R.id.selectedFileTextView);
+        textViewAddImage = findViewById(R.id.textAddImage);
         uploadFile = findViewById(R.id.uploadFileButton);
         uploadFileIcon = findViewById(R.id.uploadFileIcon);
         boderUploadFile = findViewById(R.id.borderUploadFile);
@@ -94,6 +141,7 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+                            textViewAddImage.setVisibility(View.GONE);
                             Intent data = result.getData();
                             imageUri = data.getData();
                             uploadImage.setImageURI(imageUri);

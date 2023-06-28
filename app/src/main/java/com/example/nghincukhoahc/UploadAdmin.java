@@ -266,7 +266,7 @@ public class UploadAdmin extends AppCompatActivity {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     dialog.dismiss();
-                                    Toast.makeText(UploadAdmin.this, "Lỗi tải lên hình ảnh", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UploadAdmin.this, "Lỗi tải lên hình ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -275,7 +275,7 @@ public class UploadAdmin extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             dialog.dismiss();
-                            Toast.makeText(UploadAdmin.this, "Lỗi tải lên hình ảnh", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadAdmin.this, "Lỗi tải lên hình ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         } else {

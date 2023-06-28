@@ -20,6 +20,7 @@ import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 public class SignIn extends AppCompatActivity {
     private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
@@ -32,6 +33,7 @@ public class SignIn extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
 
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {

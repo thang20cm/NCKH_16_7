@@ -1,9 +1,12 @@
 package com.example.nghincukhoahc;
 
 
+import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.annotation.SuppressLint;
@@ -13,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,6 +53,7 @@ public class DetailActivity extends AppCompatActivity {
     String key = "";
     String imageUrl = "",fileUrl="";
     Button downloadButton;
+
     private static final String ACTION_DOWNLOAD_COMPLETE = "com.example.nghincukhoahc.ACTION_DOWNLOAD_COMPLETE";
     BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
         @Override
@@ -69,6 +74,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
 
         IntentFilter downloadCompleteIntentFilter = new IntentFilter(ACTION_DOWNLOAD_COMPLETE);
         LocalBroadcastManager.getInstance(this).registerReceiver(downloadCompleteReceiver, downloadCompleteIntentFilter);
@@ -264,4 +270,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadCompleteReceiver);
     }
+
+
 }

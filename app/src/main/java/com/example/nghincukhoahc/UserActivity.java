@@ -1,10 +1,23 @@
 package com.example.nghincukhoahc;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +25,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,15 +70,38 @@ public class UserActivity extends AppCompatActivity {
     CollectionReference collectionReference;
 
     private boolean showAllPosts = false;
+    String userId;
+    TextView textViewAdminClass;
+    ImageView imageUser;
+
+    private static final int REQUEST_PERMISSION_CODE = 1;
+    private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
+        fetchUserDataAndUpdatePreferences();
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            // Kiểm tra xem hộp thoại yêu cầu cấp quyền đã hiển thị trước đó hay chưa
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSIONS[0])) {
+                // Hộp thoại yêu cầu cấp quyền đã hiển thị trước đó và người dùng từ chối
+                // Hiển thị thông báo giải thích và yêu cầu cấp quyền một lần nữa
+                showPermissionExplanationDialog();
+            } else {
+                // Hiển thị hộp thoại yêu cầu cấp quyền
+                ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+            }
+        } else {
+            // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+            // ...
+        }
 
         String userClass = preferenceManager.getString(Constants.KEY_CLASS);
         if (userClass.equals("Tất cả")) {
@@ -73,7 +111,19 @@ public class UserActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bangtin_user);
-        bottomNavigationView.setBackground(null);
+        ColorStateList iconColors = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        getResources().getColor(R.color.color_upt_yellow),
+                        getResources().getColor(R.color.white)
+                }
+        );
+
+
+        bottomNavigationView.setItemIconTintList(iconColors);
 
 
 
@@ -117,6 +167,12 @@ public class UserActivity extends AppCompatActivity {
         dataList = new ArrayList<>();
         adapter = new MyAdapterUser(UserActivity.this, dataList);
         recyclerView.setAdapter(adapter);
+
+        imageUser = findViewById(R.id.imageUser);
+
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        imageUser.setImageBitmap(bitmap);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Bài Viết");
@@ -204,8 +260,70 @@ public class UserActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
+    private void fetchUserDataAndUpdatePreferences(){
+        FirebaseFirestore dbnew = FirebaseFirestore.getInstance();
+        userId = preferenceManager.getString(Constants.KEY_USER_ID);
+        DocumentReference userRef = dbnew.collection(Constants.KEY_COLLECTION_USERS).document(userId);
+        userRef.get().addOnSuccessListener(documentSnapshot ->{
+            if(documentSnapshot.exists()){
+                String newName = documentSnapshot.getString(Constants.KEY_NAME);
+                String newEmail = documentSnapshot.getString(Constants.KEY_EMAIL);
+                String newClass = documentSnapshot.getString(Constants.KEY_CLASS);
+                String newStatus = documentSnapshot.getString(Constants.KEY_STATUS);
 
+                preferenceManager.putString(Constants.KEY_NAME,newName);
+                preferenceManager.putString(Constants.KEY_EMAIL,newEmail);
+                preferenceManager.putString(Constants.KEY_CLASS,newClass);
+                preferenceManager.putString(Constants.KEY_STATUS,newStatus);
 
+                textViewAdminClass = findViewById(R.id.adminClass);
+                textViewAdminClass.setText(newName);
+
+                preferenceManager.apply();
+                if (newStatus.equals("Disable")) {
+                    startActivity(new Intent(getApplicationContext(), ChoXetDuyetUser.class));
+                    finish();
+                }
+            }else {
+                Toast.makeText(com.example.nghincukhoahc.UserActivity.this, "User document not found", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(com.example.nghincukhoahc.UserActivity.this, "Error retrieving user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private boolean hasPermissions(Context context, String... permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+                // ...
+            } else {
+                // Người dùng từ chối cấp quyền, bạn có thể hiển thị thông báo hoặc thực hiện các xử lý phù hợp
+                Toast.makeText(this, "Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void showPermissionExplanationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quyền truy cập bộ nhớ ngoài");
+        builder.setMessage("Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file. Vui lòng cấp quyền để tiếp tục.");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Hiển thị hộp thoại yêu cầu cấp quyền
+            ActivityCompat.requestPermissions(UserActivity.this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
 
 
 }

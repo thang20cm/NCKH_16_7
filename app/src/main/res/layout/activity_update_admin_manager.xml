@@ -19,6 +19,17 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             >
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:src="@drawable/back_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/primary"
+                android:layout_marginBottom="10dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,75 +38,104 @@
                 android:textAlignment="center"
                 android:textColor="@color/primary"/>
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
+
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="240dp"
                 android:src="@drawable/photo"
                 android:id="@+id/updateImageAdmin"
                 android:layout_marginTop="10dp"
-                android:scaleType="fitCenter"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tên Admin"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:textColor="@color/primary"
-                android:textStyle="bold"/>
-            <EditText
+                app:riv_corner_radius="@dimen/_10sdp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:scaleType="fitXY"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/updateNameAdmin"
-                android:background="@drawable/lavender_border"
-                android:padding="16dp"
-
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email Admin"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:textColor="@color/primary"
-                android:textStyle="bold"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/updateEmailAdmin"
-                android:background="@drawable/lavender_border"
-                android:padding="16dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="20"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="Name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/updateNameAdmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
 
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
-            <TextView
-                android:layout_width="wrap_content"
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mật khẩu Admin"
-                android:layout_marginStart="10dp"
-                android:textSize="20dp"
-                android:textColor="@color/primary"
-                android:textStyle="bold"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/updatePWAdmin"
-                android:background="@drawable/lavender_border"
-                android:padding="16dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="Email"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/updateEmailAdmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                android:gravity="start|center_vertical"
-                android:textColor="@color/lavender"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:hint="Password"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/updatePWAdmin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lớp quàn trị"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"
                 android:textStyle="bold"/>
             <Spinner
                 android:layout_width="120dp"
+                android:layout_marginStart="20dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_spinner"
                 android:id="@+id/updateClassSpn"/>
@@ -103,7 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quyền Truy Cập"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"
                 android:textStyle="bold"/>
@@ -111,6 +151,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/QuyenTruyCap"
+                android:layout_marginStart="20dp"
                 android:background="@drawable/background_spinner"
                 />
             <!--            <EditText-->
@@ -145,7 +186,9 @@
                 android:id="@+id/saveAdminBtn"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"/>
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:cornerRadius = "5dp"/>
 
         </LinearLayout>
 

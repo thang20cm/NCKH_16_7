@@ -4,21 +4,31 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.nghincukhoahc.activites.ManagerUser;
 import com.example.nghincukhoahc.activites.SignIn;
 import com.example.nghincukhoahc.utilities.Constants;
@@ -61,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<DataClass> dataClasses = new ArrayList<>();
     private boolean showAllPosts = false;
     String userClass,name,userId,email,status,image;
+    ImageView imageAdmin;
+    private static final int REQUEST_PERMISSION_CODE = 1;
+    private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    String imageUrl = "";
+
 
 
     @Override
@@ -68,9 +83,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!hasPermissions(this, PERMISSIONS)) {
+            // Kiểm tra xem hộp thoại yêu cầu cấp quyền đã hiển thị trước đó hay chưa
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, PERMISSIONS[0])) {
+                // Hộp thoại yêu cầu cấp quyền đã hiển thị trước đó và người dùng từ chối
+                // Hiển thị thông báo giải thích và yêu cầu cấp quyền một lần nữa
+                showPermissionExplanationDialog();
+            } else {
+                // Hiển thị hộp thoại yêu cầu cấp quyền
+                ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+            }
+        } else {
+            // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+            // ...
+        }
 
 
-        preferenceManager = new PreferenceManager(getApplicationContext());
+
+
+
+            preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
         fetchUserDataAndUpdatePreferences();
 
@@ -79,11 +111,17 @@ public class MainActivity extends AppCompatActivity {
         if (userClass.equals("Tất cả")) {
             showAllPosts = true;
         }
+        imageAdmin = findViewById(R.id.imageAdmin);
+
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        imageAdmin.setImageBitmap(bitmap);
+
 
 
 //        email = preferenceManager.getString(Constants.KEY_EMAIL);
 //        name = preferenceManager.getString(Constants.KEY_NAME);
-//        image = preferenceManager.getString(Constants.KEY_IMAGE);
+
 //        status = preferenceManager.getString(Constants.KEY_STATUS);
 
 
@@ -152,12 +190,12 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            dataList.clear(); // Xóa danh sách hiện tại để cập nhật dữ liệu mới
+            //dataList.clear(); // Xóa danh sách hiện tại để cập nhật dữ liệu mới
 
             for (DocumentChange dc : value.getDocumentChanges()) {
                 DataClass dataClass = dc.getDocument().toObject(DataClass.class);
                 dataClass.setKey(dc.getDocument().getId());
-                if (dataClass.getDataLang().equals(adminClass) || showAllPosts || dataClass.getDataLang().equals("Tất cả")) {
+                if (dataClass.getDataLang().equals(userClass) || showAllPosts || dataClass.getDataLang().equals("Tất cả")) {
                     switch (dc.getType()) {
                         case ADDED:
                             dataList.add(dataClass);
@@ -199,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, UploadAdmin.class);
-                intent.putExtra("class",adminClass);
+                intent.putExtra("class",userClass);
                 startActivity(intent);
             }
         });
@@ -278,18 +316,21 @@ public class MainActivity extends AppCompatActivity {
                 String newEmail = documentSnapshot.getString(Constants.KEY_EMAIL);
                 String newClass = documentSnapshot.getString(Constants.KEY_CLASS);
                 String newStatus = documentSnapshot.getString(Constants.KEY_STATUS);
+                String newImage = documentSnapshot.getString(Constants.KEY_IMAGE);
 
                 preferenceManager.putString(Constants.KEY_NAME,newName);
                 preferenceManager.putString(Constants.KEY_EMAIL,newEmail);
                 preferenceManager.putString(Constants.KEY_CLASS,newClass);
                 preferenceManager.putString(Constants.KEY_STATUS,newStatus);
+                preferenceManager.putString(Constants.KEY_IMAGE,newImage);
+
 
                 textViewAdminClass = findViewById(R.id.adminClass);
                 textViewAdminClass.setText(newName);
-                Toast.makeText(MainActivity.this,"Name is: "+newStatus,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this,"Name is: "+newStatus,Toast.LENGTH_SHORT).show();
 
                 preferenceManager.apply();
-                Toast.makeText(MainActivity.this, "Name is: " + newName, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Name is: " + newName, Toast.LENGTH_SHORT).show();
                 if (newStatus.equals("Disable")) {
                     startActivity(new Intent(getApplicationContext(), ChoXetDuyet.class));
                     finish();
@@ -301,4 +342,38 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Error retrieving user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
+
+    private boolean hasPermissions(Context context, String... permissions) {
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Quyền đã được cấp, thực hiện các hành động khác trong ứng dụng của bạn
+                // ...
+            } else {
+                // Người dùng từ chối cấp quyền, bạn có thể hiển thị thông báo hoặc thực hiện các xử lý phù hợp
+                Toast.makeText(this, "Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void showPermissionExplanationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quyền truy cập bộ nhớ ngoài");
+        builder.setMessage("Ứng dụng cần quyền truy cập vào bộ nhớ ngoài để tải file. Vui lòng cấp quyền để tiếp tục.");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Hiển thị hộp thoại yêu cầu cấp quyền
+            ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS, REQUEST_PERMISSION_CODE);
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
 }

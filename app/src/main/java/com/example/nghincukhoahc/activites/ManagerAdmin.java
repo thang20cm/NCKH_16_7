@@ -32,7 +32,7 @@ public class ManagerAdmin extends BaseActivity implements UserListener {
 
 
         binding.bottomNavigationView.setBackground(null);
-        binding.bottomNavigationView.setSelectedItemId(R.id.chat);
+        binding.bottomNavigationView.setSelectedItemId(R.id.quanlyAdmin);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item ->{
             if(item.getItemId() == R.id.bangtin){
@@ -49,21 +49,17 @@ public class ManagerAdmin extends BaseActivity implements UserListener {
 
 
 
-    private void getUsers(){
+    private void getUsers() {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_ADMIN)
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
-                    String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
-                    if(task.isSuccessful() && task.getResult() != null) {
+                    if (task.isSuccessful() && task.getResult() != null) {
                         List<User> users = new ArrayList<>();
                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                            if (currentUserId.equals(queryDocumentSnapshot.getId())) {
-                                continue;
-                            }
-                            User user = new User();
+                            User user = queryDocumentSnapshot.toObject(User.class);
                             user.quyentruycap = queryDocumentSnapshot.getString(Constants.KEY_STATUS);
                             user.name = queryDocumentSnapshot.getString(Constants.KEY_NAME);
                             user.email = queryDocumentSnapshot.getString(Constants.KEY_EMAIL);
@@ -75,9 +71,10 @@ public class ManagerAdmin extends BaseActivity implements UserListener {
                             users.add(user);
                         }
                         if (users.size() > 0) {
-                            UserAdapter userAdapter = new UserAdapter(users,this);
+                            UserAdapter userAdapter = new UserAdapter(users, this);
                             binding.userRecyclerView.setAdapter(userAdapter);
                             binding.userRecyclerView.setVisibility(View.VISIBLE);
+                            binding.textErrorMessage.setVisibility(View.GONE);
                         } else {
                             showErrorMessage();
                         }
@@ -87,9 +84,10 @@ public class ManagerAdmin extends BaseActivity implements UserListener {
                 });
     }
 
-    private void showErrorMessage(){
-        binding.textErrorMessage.setText(String.format("%s","No User available"));
-        binding.textErrorMessage.setText(View.VISIBLE);
+    private void showErrorMessage() {
+        binding.textErrorMessage.setText("Không có lớp trưởng");
+        binding.textErrorMessage.setVisibility(View.VISIBLE);
+        binding.userRecyclerView.setVisibility(View.GONE);
     }
     private void loading(Boolean isloading){
         if(isloading){

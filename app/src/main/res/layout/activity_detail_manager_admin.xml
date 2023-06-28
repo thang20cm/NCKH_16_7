@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/white"
     >
     <ScrollView
         android:layout_width="match_parent"
@@ -22,30 +22,36 @@
                     android:id="@+id/backButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="5dp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/back_btn"
+
+                   android:background="@drawable/back_ic_round"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/white" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="200dp"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
                 android:id="@+id/detailImageAdmin"
-                android:padding="8dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:layout_gravity="center"
                 android:src="@drawable/baseline_file_upload_24"
+                app:riv_corner_radius="@dimen/_10sdp"
                 android:scaleType="fitXY"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp">
                 <TextView
                     android:id="@+id/textViewNameAdmin"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"
@@ -58,18 +64,19 @@
                     android:text="Tên admin"
                     android:id="@+id/nameAdmin"
                     android:textSize="18sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/_5sdp">
                 <TextView
                     android:textSize="18sp"
                     android:id="@+id/textViewLop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:text="Email:"/>
@@ -83,17 +90,18 @@
                     android:layout_gravity="center"
                     android:id="@+id/emailAdmin"
                     android:textSize="18sp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/primary"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp">
                 <TextView
                     android:textSize="18sp"
                     android:id="@+id/textViewNoiDung"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:text="Mật khẩu:"/>
@@ -107,19 +115,20 @@
                     android:layout_gravity="center"
                     android:id="@+id/passwordAdmin"
                     android:textSize="18sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     />
 
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp">
                 <TextView
                     android:textSize="18sp"
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:text="Lớp quản trị:"/>
@@ -129,7 +138,7 @@
                     android:layout_width="@dimen/_120sdp"
                     android:layout_marginStart="@dimen/_16sdp"
                     android:textSize="18sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     android:id="@+id/classSpn"
                     android:entries="@array/class_list"
                     />
@@ -145,7 +154,7 @@
                     android:id="@+id/textViewQTC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:text="Quyền truy cập:"/>
@@ -155,7 +164,7 @@
                     android:layout_width="@dimen/_120sdp"
                     android:layout_marginStart="@dimen/_16sdp"
                     android:textSize="18sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/primary"
                     android:id="@+id/QuyenTruyCap"
                     android:entries="@array/class_list"
                     />
@@ -165,7 +174,7 @@
             </RelativeLayout>
           <Button
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
+              android:layout_height="60dp"
               android:id="@+id/EditAdminBtn"
               android:layout_marginTop="@dimen/_20sdp"
               android:layout_gravity="center"
