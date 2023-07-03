@@ -1,6 +1,7 @@
 package com.example.nghincukhoahc.activites;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.example.nghincukhoahc.listeners.models.ChatMessage;
 import com.example.nghincukhoahc.listeners.models.User;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -54,7 +56,22 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         setListeners();
         listenConversations();
 
-        binding.bottomNavigationView.setBackground(null);
+
+        binding.bottomNavigationView.setSelectedItemId(R.id.sotay_user);
+        ColorStateList iconColors = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        getResources().getColor(R.color.color_upt_yellow),
+                        getResources().getColor(R.color.white)
+                }
+        );
+
+
+        binding.bottomNavigationView.setItemIconTintList(iconColors);
+
         binding.bottomNavigationView.setSelectedItemId(R.id.chat);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item ->{

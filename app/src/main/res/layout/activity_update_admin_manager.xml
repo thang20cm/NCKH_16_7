@@ -31,10 +31,12 @@
                 app:tint="@color/primary"
                 android:layout_marginBottom="10dp"/>
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cập Nhật Dữ Liệu Admin"
-                android:textSize="30sp"
+                android:textStyle="bold"
+                android:textSize="25sp"
                 android:textAlignment="center"
                 android:textColor="@color/primary"/>
 
@@ -42,12 +44,12 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:src="@drawable/photo"
+                android:src="@drawable/background_image"
                 android:id="@+id/updateImageAdmin"
                 android:layout_marginTop="10dp"
                 app:riv_corner_radius="@dimen/_10sdp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginBottom="20dp"
                 android:scaleType="fitXY"/>
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,13 +63,15 @@
                     android:layout_height="wrap_content"
                     app:counterEnabled="true"
                     app:counterMaxLength="20"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:textColorHint="#b6b6b6"
                     android:hint="Name"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/updateNameAdmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -85,13 +89,15 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:textColorHint="#b6b6b6"
                     android:hint="Email"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/updateEmailAdmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -109,13 +115,15 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:textColorHint="#b6b6b6"
                     android:hint="Password"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/updatePWAdmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -125,10 +133,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lớp quàn trị"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="10dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"
@@ -140,10 +149,11 @@
                 android:background="@drawable/background_spinner"
                 android:id="@+id/updateClassSpn"/>
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quyền Truy Cập"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"
                 android:textStyle="bold"/>
@@ -180,6 +190,8 @@
 
 
             <Button
+                android:fontFamily="@font/font_valera"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Lưu"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/primary"
+    android:background="@color/color_background_dark"
     tools:context=".activites.ManagerAdmin">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -23,6 +23,7 @@
         android:tint="@color/white"
         android:visibility="gone"/>
     <TextView
+        android:id="@+id/textViewQL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quản Lý Admin"
@@ -33,10 +34,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.appcompat.widget.SearchView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/font_valera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:id="@+id/search"
+        app:searchHintIcon="@null"
+        app:defaultQueryHint=""
+        app:queryHint="Search..."
+        android:focusable="false"
+        app:iconifiedByDefault="false"
+        app:closeIcon="@drawable/baseline_clear_24"
+        app:searchIcon="@drawable/baseline_search_24"
+        android:background="@drawable/background_chat_input"
+        >
+    </androidx.appcompat.widget.SearchView>
     <FrameLayout
+        android:id="@+id/Frmlayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_65sdp"
         android:background="@drawable/background_content_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageback">
@@ -68,43 +91,19 @@
             android:textSize="@dimen/_12ssp"
             android:visibility="gone"/>
     </FrameLayout>
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottomAppBar"
-            android:layout_gravity="bottom"
-            android:visibility="visible"
-            app:fabCradleMargin="10dp"
-            android:background="@android:color/transparent"
-            app:fabCradleRoundedCornerRadius="50dp"
-            >
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#151515"
+        app:menu="@menu/bottom_menu"
+        app:labelVisibilityMode="unlabeled"
+        />
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bottomNavigationView"
-                android:layout_marginEnd="15dp"
-                android:layout_gravity="center"
-                app:labelVisibilityMode="labeled"
-                android:background="@android:color/transparent"
-                app:menu="@menu/bottom_menu"
-                />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            app:tint = "@color/primary"
-            android:src="@drawable/baseline_add_24"
-            app:layout_anchor="@id/bottomAppBar"
-            />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 

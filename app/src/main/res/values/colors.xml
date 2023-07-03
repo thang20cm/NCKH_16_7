@@ -10,7 +10,8 @@
     <color name="lavender">#8692f7</color>
     <color name="red">#c70000</color>
     <color name="green">#10a37f</color>
-    <color name="purple_lower">#929ab5</color>
+    <color name="purple_lower">#676666</color>
+    <color name="text_search_hint">#676666</color>
     <color name="purple">#8692f7</color>
     <color name="grey">#eceef9</color>
     <color name="custom_tab_toolbar_color">#FF0000</color>
@@ -33,4 +34,6 @@
 
     <color name="color_icon_bottom">#bf3052</color>
     <color name="color_icon_bottom_unselect">#818181</color>
+
+    <color name="color_background_dark">#101011</color>
 </resources>

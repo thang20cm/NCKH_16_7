@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,6 +68,9 @@ public class UploadActivity extends AppCompatActivity {
     String adminClass;
 
     Spinner uploadSpinner,spinnerKhoa;
+    private CheckBox checkboxAll;
+    String langcb;
+    LinearLayout borderUploadFile;
 
 
     @SuppressLint("MissingInflatedId")
@@ -74,6 +79,16 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
+        borderUploadFile  = findViewById(R.id.borderUploadFile);
+
+        checkboxAll = findViewById(R.id.checkboxAll);
+        checkboxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                uploadSpinner.setEnabled(!isChecked);
+                spinnerKhoa.setEnabled(!isChecked);
+            }
+        });
 
 
         String[] classArray = getResources().getStringArray(R.array.upload_class_array);
@@ -159,6 +174,7 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+                            borderUploadFile.setVisibility(View.VISIBLE);
                             Intent data = result.getData();
                             fileUri = data.getData();
                             if (fileUri != null) {
@@ -173,13 +189,14 @@ public class UploadActivity extends AppCompatActivity {
 
                                     Glide.with(UploadActivity.this)
                                             .load(imageResource)
+                                            .centerInside()
                                             .into(uploadFileIcon);
                                 } else {
-                                    uploadFileIcon.setImageResource(R.drawable.add_btn);
+                                    uploadFileIcon.setImageResource(R.drawable.every_file);
                                 }
                             } else {
                                 textViewAddFile.setText("");
-                                uploadFileIcon.setImageResource(R.drawable.add_btn);
+                                uploadFileIcon.setImageResource(R.drawable.every_file);
                             }
                         } else {
                             Toast.makeText(UploadActivity.this, "No File Selected", Toast.LENGTH_SHORT).show();
@@ -232,10 +249,10 @@ public class UploadActivity extends AppCompatActivity {
             return false;
         }
 
-        if (imageUri == null && fileUri == null) {
-            Toast.makeText(UploadActivity.this, "Vui lòng chọn hình ảnh hoặc tệp tin", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+//        if (imageUri == null && fileUri == null) {
+//            Toast.makeText(UploadActivity.this, "Vui lòng chọn hình ảnh hoặc tệp tin", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
         return true;
     }
@@ -246,6 +263,7 @@ public class UploadActivity extends AppCompatActivity {
         builder.setView(R.layout.progress_layout);
         AlertDialog dialog = builder.create();
         dialog.show();
+
 
         uploadImage(dialog);
     }
@@ -329,7 +347,14 @@ public class UploadActivity extends AppCompatActivity {
     private void uploadData(AlertDialog dialog) {
         String title = uploadTopic.getText().toString();
         String desc = uploadDesc.getText().toString();
-        String lang = uploadSpinner.getSelectedItem().toString();
+        //String lang = uploadSpinner.getSelectedItem().toString();
+        String lang;
+
+        if (checkboxAll.isChecked()) {
+            lang = checkboxAll.getText().toString();
+        } else {
+            lang = uploadSpinner.getSelectedItem().toString();
+        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

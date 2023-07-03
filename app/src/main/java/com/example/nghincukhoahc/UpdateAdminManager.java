@@ -49,27 +49,6 @@ public class UpdateAdminManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_admin_manager);
 
-
-
-        updateAdminBtn = findViewById(R.id.saveAdminBtn);
-        updateImgAdmin = findViewById(R.id.updateImageAdmin);
-
-        classArray = getResources().getStringArray(R.array.upload_class_array);
-        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArray);
-
-        classArrayQTC = getResources().getStringArray(R.array.quyentruycap_array);
-        spinnerAdapterQTC = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArrayQTC);
-
-
-        updateQuentruycap = findViewById(R.id.QuyenTruyCap);
-        updateNameadmin = findViewById(R.id.updateNameAdmin);
-        updateEmailadmin = findViewById(R.id.updateEmailAdmin);
-        updatePasswordadmin = findViewById(R.id.updatePWAdmin);
-        updateClassadmin = findViewById(R.id.updateClassSpn);
-
-        updateClassadmin.setAdapter(spinnerAdapter);
-        updateQuentruycap.setAdapter(spinnerAdapterQTC);
-
         backbtn = findViewById(R.id.backButton);
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +78,29 @@ public class UpdateAdminManager extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        updateAdminBtn = findViewById(R.id.saveAdminBtn);
+        updateImgAdmin = findViewById(R.id.updateImageAdmin);
+
+        classArray = getResources().getStringArray(R.array.upload_class_array);
+        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArray);
+
+        classArrayQTC = getResources().getStringArray(R.array.quyentruycap_array);
+        spinnerAdapterQTC = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArrayQTC);
+
+
+        updateQuentruycap = findViewById(R.id.QuyenTruyCap);
+        updateNameadmin = findViewById(R.id.updateNameAdmin);
+        updateEmailadmin = findViewById(R.id.updateEmailAdmin);
+        updatePasswordadmin = findViewById(R.id.updatePWAdmin);
+        updateClassadmin = findViewById(R.id.updateClassSpn);
+
+        updateClassadmin.setAdapter(spinnerAdapter);
+        updateQuentruycap.setAdapter(spinnerAdapterQTC);
+
+
+
 
 
         Bundle bundle = getIntent().getExtras();
@@ -172,7 +174,7 @@ public class UpdateAdminManager extends AppCompatActivity {
         }
 
         // Cập nhật dữ liệu vào Firestore
-        documentReference = firestore.collection("adminclass").document(userId);
+        documentReference = firestore.collection(Constants.KEY_COLLECTION_ADMIN).document(userId);
         documentReference.update(
                 Constants.KEY_NAME, nameAdmin,
                 Constants.KEY_EMAIL, emailAdmin,

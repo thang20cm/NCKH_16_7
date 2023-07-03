@@ -9,6 +9,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -153,6 +155,9 @@ public class UserActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         searchView = findViewById(R.id.search);
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+
         searchView.clearFocus();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(UserActivity.this, 1);
@@ -169,6 +174,19 @@ public class UserActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         imageUser = findViewById(R.id.imageUser);
+        imageUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfileUser.class);
+                intent.putExtra(Constants.KEY_USER_ID, getIntent().getStringExtra(Constants.KEY_USER_ID));
+                intent.putExtra(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
+                intent.putExtra(Constants.KEY_EMAIL, preferenceManager.getString(Constants.KEY_EMAIL));
+                intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS));
+                intent.putExtra(Constants.KEY_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
+                startActivity(intent);
+                finish();
+            }
+        });
 
         byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
@@ -324,6 +342,7 @@ public class UserActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.show();
     }
+
 
 
 }

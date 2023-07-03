@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,11 +20,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,13 +79,16 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_CODE = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     String imageUrl = "";
+    private Toolbar toolbarSV;
 
+    EditText searchEditext;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         if (!hasPermissions(this, PERMISSIONS)) {
             // Kiểm tra xem hộp thoại yêu cầu cấp quyền đã hiển thị trước đó hay chưa
@@ -102,9 +109,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
             preferenceManager = new PreferenceManager(getApplicationContext());
-        setListeners();
         fetchUserDataAndUpdatePreferences();
+        setListeners();
+
 
 
         userClass = preferenceManager.getString(Constants.KEY_CLASS);
@@ -112,6 +123,19 @@ public class MainActivity extends AppCompatActivity {
             showAllPosts = true;
         }
         imageAdmin = findViewById(R.id.imageAdmin);
+        imageAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileAdmin.class);
+                intent.putExtra(Constants.KEY_USER_ID, getIntent().getStringExtra(Constants.KEY_USER_ID));
+                intent.putExtra(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
+                intent.putExtra(Constants.KEY_EMAIL, preferenceManager.getString(Constants.KEY_EMAIL));
+                intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS));
+                intent.putExtra(Constants.KEY_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
+                startActivity(intent);
+                finish();
+            }
+        });
 
         byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE),Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
@@ -140,7 +164,20 @@ public class MainActivity extends AppCompatActivity {
         // Khi khởi tạo MainActivity, ẩn Button
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bangtin);
-        bottomNavigationView.setBackground(null);
+
+        ColorStateList iconColors = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        getResources().getColor(R.color.color_upt_yellow),
+                        getResources().getColor(R.color.white)
+                }
+        );
+
+
+        bottomNavigationView.setItemIconTintList(iconColors);
 
 
 
@@ -148,8 +185,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bangtin) {
                 return true;
-            }
-            else if(item.getItemId() == R.id.managerSV){
+            } else if (item.getItemId() == R.id.fab_add) {
+                Intent intent = new Intent(MainActivity.this, UploadAdmin.class);
+                intent.putExtra("class",userClass);
+                startActivity(intent);
+            } else if(item.getItemId() == R.id.managerSV){
                 startActivity(new Intent(getApplicationContext(), ManagerUser.class));
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
@@ -161,8 +201,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.recyclerView);
-        fab = findViewById(R.id.fab);
         searchView = findViewById(R.id.search);
+
+
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+
 
         searchView.clearFocus();
 
@@ -233,14 +277,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, UploadAdmin.class);
-                intent.putExtra("class",userClass);
-                startActivity(intent);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, UploadAdmin.class);
+//                intent.putExtra("class",userClass);
+//                startActivity(intent);
+//            }
+//        });
 
 
         AppCompatImageView logoutButton = findViewById(R.id.logoutButton);
@@ -318,6 +362,8 @@ public class MainActivity extends AppCompatActivity {
                 String newStatus = documentSnapshot.getString(Constants.KEY_STATUS);
                 String newImage = documentSnapshot.getString(Constants.KEY_IMAGE);
 
+                //updateAdminData(newName, newEmail, newClass);
+
                 preferenceManager.putString(Constants.KEY_NAME,newName);
                 preferenceManager.putString(Constants.KEY_EMAIL,newEmail);
                 preferenceManager.putString(Constants.KEY_CLASS,newClass);
@@ -375,5 +421,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.show();
     }
+
+
+
 
 }

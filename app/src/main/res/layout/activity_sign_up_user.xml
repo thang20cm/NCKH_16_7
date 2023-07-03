@@ -91,6 +91,7 @@
                 app:layout_constraintTop_toTopOf="parent">
                 <com.google.android.material.textfield.TextInputEditText
                     android:fontFamily="@font/font_valera"
+                    android:inputType="textEmailAddress"
                     android:id="@+id/inputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />

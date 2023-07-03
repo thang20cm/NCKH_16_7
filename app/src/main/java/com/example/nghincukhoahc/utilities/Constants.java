@@ -3,6 +3,8 @@ package com.example.nghincukhoahc.utilities;
 import java.util.HashMap;
 
 public class Constants {
+
+    public static final String ACTION_UPDATE_USER = "com.example.nghincukhoahc.ACTION_UPDATE_USER";
     public static final int PICK_IMAGE_REQUEST_CODE = 1;
     public static final String KEY_FROM_MAIN_ACTIVITY = "from_main_activity";
     public static final String KEY_FROM_USER_ACTIVITY = "from_user_activity";

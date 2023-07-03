@@ -46,9 +46,10 @@ public class DetailManagerAdmin extends AppCompatActivity {
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailManagerAdmin.this, ManagerAdmin.class);
-                startActivity(intent);
-                finish();
+                onBackPressed();
+//                Intent intent = new Intent(DetailManagerAdmin.this, ManagerAdmin.class);
+//                startActivity(intent);
+//                finish();
             }
         });
 
@@ -156,7 +157,9 @@ public class DetailManagerAdmin extends AppCompatActivity {
         // Kiểm tra điều kiện để quyết định hành động cụ thể
 
         // Gọi super.onBackPressed() để giữ lại hành vi mặc định của nút "Trở về"
-        super.onBackPressed();
+        Intent intent = new Intent(DetailManagerAdmin.this, ManagerAdmin.class);
+        startActivity(intent);
+        finish();
     }
 
 

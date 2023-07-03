@@ -166,13 +166,14 @@ public class UploadAdmin extends AppCompatActivity {
 
                                     Glide.with(UploadAdmin.this)
                                             .load(imageResource)
+                                            .centerInside()
                                             .into(uploadFileIcon);
                                 } else {
-                                    uploadFileIcon.setImageResource(R.drawable.add_btn);
+                                    uploadFileIcon.setImageResource(R.drawable.every_file);
                                 }
                             } else {
                                 textViewAddFile.setText("");
-                                uploadFileIcon.setImageResource(R.drawable.add_btn);
+                                uploadFileIcon.setImageResource(R.drawable.every_file);
                             }
                         } else {
                             Toast.makeText(UploadAdmin.this, "No File Selected", Toast.LENGTH_SHORT).show();
@@ -228,10 +229,10 @@ public class UploadAdmin extends AppCompatActivity {
             return false;
         }
 
-        if (imageUri == null && fileUri == null) {
-            Toast.makeText(UploadAdmin.this, "Vui lòng chọn hình ảnh hoặc tệp tin", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+//        if (imageUri == null && fileUri == null) {
+//            Toast.makeText(UploadAdmin.this, "Vui lòng chọn hình ảnh hoặc tệp tin", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
         return true;
     }

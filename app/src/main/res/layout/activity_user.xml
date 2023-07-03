@@ -69,6 +69,7 @@
     android:id="@+id/containerTop"
     tools:ignore="MissingConstraints">
     <androidx.appcompat.widget.SearchView
+
         android:fontFamily="@font/font_valera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,8 +84,9 @@
         app:iconifiedByDefault="false"
         app:closeIcon="@drawable/baseline_clear_24"
         app:searchIcon="@drawable/baseline_search_24"
-        android:background="@drawable/background_search"
-        />
+        android:background="@drawable/background_chat_input"
+        >
+    </androidx.appcompat.widget.SearchView>
 
 <!--    <Spinner-->
 <!--        android:background="@drawable/background_spinner"-->

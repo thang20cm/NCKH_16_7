@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-
-    android:gravity="center"
     tools:context=".SplashScreen">
     <ImageView
+        android:id="@+id/imageLogo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="0dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/uptimg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@mipmap/ic_launcher"
         />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:lottie_autoPlay="true"
-        android:background="#ffffff"
-        app:lottie_cacheComposition="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/c"
-        app:lottie_speed="1"/>
-
 
 
     <TextView
-        android:layout_marginBottom="20dp"
+        android:id="@+id/from"
+        android:fontFamily="@font/font_valera"
+        android:layout_marginBottom="65dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/lavender"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:textColor="#A8A8A8"
         android:textSize="20dp"
         android:textAlignment="center"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="from"/>
+    <TextView
+        android:id="@+id/buildby"
+        android:fontFamily="@font/font_valera"
+        android:layout_marginBottom="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_upt_yellow"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Duong Thang"/>
 
-        android:text="Chào mừng bạn đến với ứng dụng tìm kiếm thông tin cho tân sinh viên UPT"/>
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

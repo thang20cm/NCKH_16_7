@@ -246,25 +246,22 @@ public class SignUp extends AppCompatActivity {
 
     private Boolean isValidSignUpDetails() {
         if (encodedImage == null) {
-            showToast("Select profile image");
+            showToast("Hãy chọn hình ảnh");
             return false;
         } else if (binding.inputName.getText().toString().trim().isEmpty()) {
-            showToast("Enter name");
+            showToast("Nhập tên");
             return false;
-        } else if (binding.inputEmail.getText().toString().trim().isEmpty()) {
-            showToast("Enter email");
-            return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
-            showToast("Enter valid email");
+        } else if (Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches() || binding.inputEmail.getText().toString().trim().isEmpty()) {
+            showToast("Hãy nhập đúng email");
             return false;
         } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
-            showToast("Enter password");
+            showToast("Nhập mật khẩu");
             return false;
         } else if (binding.inputComfirmPassword.getText().toString().trim().isEmpty()) {
-            showToast("Confirm your password");
+            showToast("Nhập lại mật khẩu");
             return false;
         } else if (!binding.inputPassword.getText().toString().equals(binding.inputComfirmPassword.getText().toString())) {
-            showToast("Password and confirm password must match");
+            showToast("Mật khẩu và nhập lại mật khẩu phải giống nhau");
             return false;
         } else {
             String name = binding.inputName.getText().toString();

@@ -24,6 +24,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +49,12 @@ import java.util.Date;
 public class DetailActivity extends AppCompatActivity {
 
     TextView detailDesc, detailTitle, detailLang,detailDateTime,detailFileAdmin,textViewFile;
-    ImageView detailImage,backbutton;
+    ImageView detailImage,backbutton,uploadFileIcon;
     FloatingActionButton deleteButton, editButton;
     String key = "";
     String imageUrl = "",fileUrl="";
     Button downloadButton;
+    LinearLayout borderUploadFile;
 
     private static final String ACTION_DOWNLOAD_COMPLETE = "com.example.nghincukhoahc.ACTION_DOWNLOAD_COMPLETE";
     BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
@@ -101,6 +103,9 @@ public class DetailActivity extends AppCompatActivity {
         detailFileAdmin = findViewById(R.id.detailFileAdmin);
         downloadButton = findViewById(R.id.downloadButton);
 
+        uploadFileIcon = findViewById(R.id.uploadFileIcon);
+        borderUploadFile = findViewById(R.id.borderUploadFile);
+
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,16 +124,24 @@ public class DetailActivity extends AppCompatActivity {
             Glide.with(this).load(bundle.getString("Image")).into(detailImage);
 
             fileUrl = bundle.getString("File");
-            if(fileUrl != null && !fileUrl.isEmpty()){
+            if (fileUrl != null && !fileUrl.isEmpty()) {
                 String fileName = getFileNameFromUrl(fileUrl);
                 detailFileAdmin.setText(fileName);
                 detailFileAdmin.setVisibility(View.VISIBLE);
                 downloadButton.setVisibility(View.VISIBLE);
-            }
-            else {
+
+                String fileExtension = getFileExtension(fileName);
+                int fileIconResId = getFileIconResourceId(fileExtension);
+                if (fileIconResId != 0) {
+                    uploadFileIcon.setImageResource(fileIconResId);
+                }
+                uploadFileIcon.setVisibility(View.VISIBLE);
+                borderUploadFile.setVisibility(View.VISIBLE);
+            } else {
                 detailFileAdmin.setVisibility(View.GONE);
                 downloadButton.setVisibility(View.GONE);
                 textViewFile.setVisibility(View.GONE);
+                uploadFileIcon.setVisibility(View.GONE);
             }
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -270,6 +283,37 @@ public class DetailActivity extends AppCompatActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadCompleteReceiver);
     }
+
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex != -1 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
+    }
+
+    private int getFileIconResourceId(String fileExtension) {
+        switch (fileExtension) {
+            case "pdf":
+                return R.drawable.pdf;
+            case "doc":
+            case "docx":
+                return R.drawable.word;
+            case "xls":
+            case "xlsx":
+                return R.drawable.xls;
+            case "ppt":
+            case "pptx":
+                return R.drawable.ppt;
+            case "txt":
+                return R.drawable.txt;
+            // Thêm các loại tệp tin khác tương ứng ở đây
+            default:
+                return R.drawable.txt;
+        }
+    }
+
+
 
 
 }

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/color_background_dark"
     tools:context=".MainActivity">
 
     <RelativeLayout
-
+        app:layout_constraintBottom_toTopOf="@+id/search"
+        android:id="@+id/containerHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
        android:orientation="vertical"
-        android:layout_marginTop="0dp"
         >
        <com.makeramen.roundedimageview.RoundedImageView
-           android:layout_marginTop="15dp"
-           android:layout_marginStart="12dp"
+           android:layout_marginTop="25dp"
+           android:layout_marginStart="17dp"
            android:id="@+id/imageAdmin"
            android:background="@drawable/background_image"
            android:scaleType="centerCrop"
@@ -31,18 +31,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello,"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="64dp"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"/>
         <TextView android:layout_height="wrap_content"
             android:id="@+id/adminClass"
-            android:text="Adminlo"
-            android:layout_marginTop="23dp"
+            android:text="Users"
+            android:layout_marginTop="28dp"
             android:layout_width="wrap_content"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_marginStart="60dp"
+            android:layout_marginStart="64dp"
 
             />
         <androidx.appcompat.widget.AppCompatImageView
@@ -64,69 +64,49 @@
 
 
     <androidx.appcompat.widget.SearchView
+        app:layout_constraintTop_toBottomOf="@+id/containerHeader"
+
+        android:fontFamily="@font/font_valera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
         android:id="@+id/search"
-        app:iconifiedByDefault="false"
         app:searchHintIcon="@null"
+        app:defaultQueryHint=""
         app:queryHint="Search..."
-        android:textColorHint="@color/purple_lower"
         android:focusable="false"
+        app:iconifiedByDefault="false"
         app:closeIcon="@drawable/baseline_clear_24"
         app:searchIcon="@drawable/baseline_search_24"
-        android:background="@drawable/lavender_border"/>
+        android:background="@drawable/background_chat_input"
+        />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    >
+
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="115dp"
-        android:layout_below="@id/search"
 
+        android:layout_marginTop="130dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
         android:scrollbars="vertical"/>
 
 
-    </LinearLayout>
-    <com.google.android.material.bottomappbar.BottomAppBar
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomAppBar"
-        android:layout_gravity="bottom"
-        android:visibility="visible"
-        app:fabCradleMargin="10dp"
-        android:background="@android:color/transparent"
-        app:fabCradleRoundedCornerRadius="50dp"
-        >
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottomNavigationView"
-            android:layout_marginEnd="15dp"
-            android:layout_gravity="center"
-            app:labelVisibilityMode="labeled"
-            android:background="@android:color/transparent"
-            app:menu="@menu/buttom_menu_admin_lower"
-            />
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        app:tint = "@color/primary"
-        android:src="@drawable/baseline_add_24"
-        app:layout_anchor="@id/bottomAppBar"
+        android:id="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#151515"
+        app:menu="@menu/buttom_menu_admin_lower"
+        app:labelVisibilityMode="unlabeled"
         />
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

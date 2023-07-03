@@ -37,6 +37,7 @@
             android:layout_marginRight="10dp"
             >
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                 />
 
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Đăng bài"
@@ -70,7 +72,7 @@
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/background_image_upload"
                     android:scaleType="centerCrop"
-                    app:riv_oval="true"/>
+                    />
                 <TextView
                     android:id="@+id/textAddImage"
                     android:layout_width="wrap_content"
@@ -107,11 +109,13 @@
                     app:counterMaxLength="40"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
+                    android:textColorHint="#b6b6b6"
                     android:hint="Tiêu đề"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/uploadTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -130,12 +134,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nội dung"
+                    android:textColorHint="#b6b6b6"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/uploadDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
@@ -158,6 +164,7 @@
                 android:visibility="gone"
                 />
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -171,23 +178,25 @@
 
 
                         <Button
+                            android:fontFamily="@font/font_valera"
                 android:id="@+id/uploadFileButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                 android:text="Tải lên File" />
             <LinearLayout
+                android:layout_marginStart="25dp"
                 android:id="@+id/borderUploadFile"
-                android:layout_width="wrap_content"
+                android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginStart="20dp"
                 android:background="@drawable/background_import_file"
-               >
+                android:visibility="gone"
+                >
                 <ImageView
                     android:id="@+id/uploadFileIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="128px"
+                    android:layout_height="128px"
                     android:src="@drawable/df"
                     />
 
@@ -196,10 +205,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:text="bao-cao-thuc-tap-1.pdf"
                     />
             </LinearLayout>
 
-<!--            -->
+
+
+            <!--            -->
 
 
 
@@ -207,15 +219,17 @@
 
 
             <Button
+                android:fontFamily="@font/font_valera"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Lưu"
+                android:textStyle="bold"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:id="@+id/saveButton"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"/>
+                app:cornerRadius = "5dp"/>
 
         </LinearLayout>
 

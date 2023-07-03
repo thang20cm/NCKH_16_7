@@ -21,14 +21,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.nghincukhoahc.activites.ManagerAdmin;
+import com.example.nghincukhoahc.activites.ManagerUser;
 import com.example.nghincukhoahc.activites.SignIn;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
@@ -93,13 +96,29 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
         // Khi khởi tạo MainActivity, ẩn Button
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bangtin);
-        bottomNavigationView.setBackground(null);
+        ColorStateList iconColors = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        getResources().getColor(R.color.color_upt_yellow),
+                        getResources().getColor(R.color.white)
+                }
+        );
+
+
+        bottomNavigationView.setItemIconTintList(iconColors);
+
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bangtin) {
                 return true;
-            } else if (item.getItemId() == R.id.quanlyAdmin) {
+            } else if (item.getItemId() == R.id.fab_add) {
+                Intent intent = new Intent(MainActivitySuperAdmin.this, UploadActivity.class);
+                startActivity(intent);
+            } else if(item.getItemId() == R.id.quanlyAdmin){
                 startActivity(new Intent(getApplicationContext(), ManagerAdmin.class));
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
@@ -108,10 +127,11 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
             return false;
         });
 
-
         recyclerView = findViewById(R.id.recyclerView);
-        fab = findViewById(R.id.fab);
         searchView = findViewById(R.id.search);
+
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
 
         searchView.clearFocus();
 
@@ -172,13 +192,6 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivitySuperAdmin.this, UploadActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
         AppCompatImageView logoutButton = findViewById(R.id.logoutButton);

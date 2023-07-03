@@ -6,25 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/primary"
+    android:background="@color/white"
     tools:context=".UploadActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/back_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/primary" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
 
             >
 
             <TextView
+                android:fontFamily="@font/font_valera"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Đăng bài"
@@ -40,10 +53,12 @@
                     android:id="@+id/uploadImage"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="15dp"
                     android:background="@drawable/background_image_upload"
-                    android:scaleType="centerCrop"
-                    app:riv_oval="true"/>
+                    android:scaleType="centerCrop" />
                 <TextView
                     android:id="@+id/textAddImage"
                     android:layout_width="wrap_content"
@@ -57,19 +72,30 @@
             </FrameLayout>
 
             <TextView
+                android:fontFamily="@font/font_valera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nhập lớp"
                 android:textStyle="bold"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="25dp"
                 android:textSize="20dp"
                 android:textColor="@color/primary"/>
+            <CheckBox
+                android:fontFamily="@font/font_valera"
+                android:id="@+id/checkboxAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:text="Tất cả" />
+
             <LinearLayout
+                android:layout_marginStart="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/_10sdp">
+                android:layout_marginTop="@dimen/_5sdp">
                 <TextView
+                    android:fontFamily="@font/font_valera"
                     android:id="@+id/textViewlopQuanTri"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,6 +115,7 @@
                     android:spinnerMode="dropdown"
                     />
                 <TextView
+                    android:fontFamily="@font/font_valera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chọn lớp"
@@ -106,6 +133,7 @@
                     android:spinnerMode="dropdown"
                     app:layout_constraintTop_toBottomOf="@+id/textViewlopQuanTri"
                     />
+
             </LinearLayout>
 <!--            <EditText-->
 <!--                android:layout_width="match_parent"-->
@@ -119,6 +147,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 >
                 <com.google.android.material.textfield.TextInputLayout
@@ -128,10 +158,12 @@
                     app:counterEnabled="true"
                     app:counterMaxLength="40"
                     android:hint="Tiêu đề"
+                    android:textColorHint="#b6b6b6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/uploadTopic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -143,6 +175,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 >
                 <com.google.android.material.textfield.TextInputLayout
@@ -150,18 +184,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nội dung"
+                    android:textColorHint="#b6b6b6"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:fontFamily="@font/font_valera"
                         android:id="@+id/uploadDesc"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <EditText
                 android:layout_width="match_parent"
@@ -177,6 +213,8 @@
                 />
 
             <TextView
+                android:fontFamily="@font/font_valera"
+                android:layout_marginStart="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -188,21 +226,24 @@
 
 
             <Button
+                android:layout_marginStart="25dp"
                 android:id="@+id/uploadFileButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tải lên File" />
             <LinearLayout
+                android:layout_marginStart="25dp"
                 android:id="@+id/borderUploadFile"
-                android:layout_width="wrap_content"
+                android:layout_width="128dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/background_import_file"
+                android:visibility="gone"
                 >
                 <ImageView
                     android:id="@+id/uploadFileIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="128px"
+                    android:layout_height="128px"
                     android:src="@drawable/df"
                     />
 
@@ -211,6 +252,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:text="bao-cao-thuc-tap-1.pdf"
                     />
             </LinearLayout>
 
@@ -224,7 +266,9 @@
                 android:id="@+id/saveButton"
                 android:textSize="18sp"
                 android:layout_marginTop="20dp"
-                app:cornerRadius = "20dp"/>
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                app:cornerRadius = "5dp"/>
 
 
         </LinearLayout>

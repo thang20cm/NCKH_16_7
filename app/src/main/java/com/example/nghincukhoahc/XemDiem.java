@@ -3,6 +3,7 @@ package com.example.nghincukhoahc;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -41,7 +42,21 @@ public class XemDiem extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.xemdiem);
-        bottomNavigationView.setBackground(null);
+
+        ColorStateList iconColors = new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        getResources().getColor(R.color.color_upt_yellow),
+                        getResources().getColor(R.color.white)
+                }
+        );
+
+
+        bottomNavigationView.setItemIconTintList(iconColors);
+
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.bangtin_user) {
