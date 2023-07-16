@@ -70,6 +70,7 @@ public class UploadAdmin extends AppCompatActivity {
     String adminClass;
 
     List<Uri> fileUris = new ArrayList<>();
+    LinearLayout getBoderUploadFile;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -152,6 +153,7 @@ public class UploadAdmin extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
+                            boderUploadFile.setVisibility(View.VISIBLE);
                             Intent data = result.getData();
                             fileUri = data.getData();
                             if (fileUri != null) {

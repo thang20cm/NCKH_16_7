@@ -68,7 +68,7 @@ public class DetailManagerAdmin extends AppCompatActivity {
                 intent.putExtra(Constants.KEY_NAME, nameAdmin.getText().toString());
                 intent.putExtra(Constants.KEY_EMAIL, emailAdmin.getText().toString());
                 intent.putExtra(Constants.KEY_PASSWORD, passwordAdmin.getText().toString());
-                intent.putExtra(Constants.KEY_CLASS, classTV.getText().toString());
+                intent.putExtra(Constants.KEY_KHOA, classTV.getText().toString());
                 intent.putExtra(Constants.KEY_USER_ID, getIntent().getStringExtra(Constants.KEY_USER_ID));
                 intent.putExtra(Constants.KEY_IMAGE, base64Image);
                 intent.putExtra(Constants.KEY_STATUS,quentruycap.getText().toString());
@@ -91,7 +91,7 @@ public class DetailManagerAdmin extends AppCompatActivity {
             nameAdmin.setText(bundle.getString(Constants.KEY_NAME));
             emailAdmin.setText(bundle.getString(Constants.KEY_EMAIL));
             passwordAdmin.setText(bundle.getString(Constants.KEY_PASSWORD));
-            classTV.setText(bundle.getString(Constants.KEY_CLASS));
+            classTV.setText(bundle.getString(Constants.KEY_KHOA));
 
 
             String base64Image = bundle.getString(Constants.KEY_IMAGE);
@@ -104,7 +104,7 @@ public class DetailManagerAdmin extends AppCompatActivity {
 
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference documentReference = db.collection("adminclass").document();
+            DocumentReference documentReference = db.collection("adminkhoa").document();
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {

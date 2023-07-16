@@ -1,6 +1,9 @@
 package com.example.nghincukhoahc.activites;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.nghincukhoahc.ChoXetDuyetUser;
 import com.example.nghincukhoahc.MainActivity;
 import com.example.nghincukhoahc.R;
+import com.example.nghincukhoahc.SQLite.DatabaseKhoaHelper;
 import com.example.nghincukhoahc.databinding.ActivitySignUpUserBinding;
 import com.example.nghincukhoahc.utilities.Constants;
 import com.example.nghincukhoahc.utilities.PreferenceManager;
@@ -33,7 +37,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SignUp extends AppCompatActivity {
@@ -42,6 +48,7 @@ public class SignUp extends AppCompatActivity {
     private String encodedImage;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DatabaseKhoaHelper dbHelper;
 
 
     @Override
@@ -50,43 +57,13 @@ public class SignUp extends AppCompatActivity {
         binding = ActivitySignUpUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.spinnerKhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        dbHelper = new DatabaseKhoaHelper(this);
 
-                String selectedKhoa = parent.getItemAtPosition(position).toString();
-//                if(selectedKhoa.equals("Chọn khoa")){
-//                    binding.spinnerClass.setEnabled(false);
-//                    binding.spinnerClass.setSelection(0);
-//                    Toast.makeText(SignUp.this,"Vui lòng chọn khoa",Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    binding.spinnerClass.setEnabled(true);
-//                }
-                int lopArrayResId = 0;
+        ArrayAdapter<String> khoaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getKhoaData());
+        khoaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerKhoa.setAdapter(khoaAdapter);
 
-                if(selectedKhoa.equals("CNTT")){
-                    lopArrayResId = R.array.lop_cntt_array;
-                }
-                else if(selectedKhoa.equals("KS")){
-                    lopArrayResId = R.array.lop_ks_array;
-                }
-
-                String[] lopArray = getResources().getStringArray(lopArrayResId);
-
-                // Cập nhật danh sách lớp cho Spinner lớp
-                ArrayAdapter<String> lopAdapter = new ArrayAdapter<>(SignUp.this, android.R.layout.simple_spinner_item, lopArray);
-                binding.spinnerClass.setAdapter(lopAdapter);
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
@@ -121,6 +98,18 @@ public class SignUp extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
+        });
+        binding.spinnerKhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedKhoa = parent.getItemAtPosition(position).toString();
+                loadClassesByKhoa(selectedKhoa);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Không làm gì khi không có mục nào được chọn
+            }
         });
     }
 
@@ -181,6 +170,7 @@ public class SignUp extends AppCompatActivity {
     private void signUp() {
         loading(true);
 
+        String selectedKhoa = binding.spinnerKhoa.getSelectedItem().toString();
         String selectedClass = binding.spinnerClass.getSelectedItem().toString();
         String name = binding.inputName.getText().toString();
         String email = binding.inputEmail.getText().toString();
@@ -193,6 +183,7 @@ public class SignUp extends AppCompatActivity {
         user.put(Constants.KEY_PASSWORD, password);
         user.put(Constants.KEY_IMAGE, encodedImage);
         user.put(Constants.KEY_CLASS, selectedClass);
+        user.put(Constants.KEY_KHOA, selectedKhoa);
 
         db.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
@@ -251,9 +242,9 @@ public class SignUp extends AppCompatActivity {
         } else if (binding.inputName.getText().toString().trim().isEmpty()) {
             showToast("Nhập tên");
             return false;
-        } else if (Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches() || binding.inputEmail.getText().toString().trim().isEmpty()) {
-            showToast("Hãy nhập đúng email");
-            return false;
+//        } else if (Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches() || binding.inputEmail.getText().toString().trim().isEmpty()) {
+//            showToast("Hãy nhập đúng email");
+//            return false;
         } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
             showToast("Nhập mật khẩu");
             return false;
@@ -318,7 +309,48 @@ public class SignUp extends AppCompatActivity {
                 });
 
     }
+    private List<String> getKhoaData() {
+        List<String> khoaList = new ArrayList<>();
 
+        // Mở cơ sở dữ liệu để đọc
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Truy vấn dữ liệu từ bảng tableKhoa
+        Cursor cursor = db.rawQuery("SELECT nameKhoa FROM tableKhoa", null);
+
+        // Lặp qua các hàng và thêm dữ liệu vào danh sách khoa
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String khoa = cursor.getString(cursor.getColumnIndex("nameKhoa"));
+                khoaList.add(khoa);
+            } while (cursor.moveToNext());
+        }
+
+        // Đóng cursor và cơ sở dữ liệu
+        cursor.close();
+        db.close();
+
+        return khoaList;
+    }
+
+    private void loadClassesByKhoa(String khoa) {
+        long khoaId = dbHelper.getKhoaId(khoa);
+        List<String> classList = new ArrayList<>();
+
+        if (khoaId != -1) {
+            Cursor cursor = dbHelper.getClassesByKhoa(khoaId);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") String className = cursor.getString(cursor.getColumnIndex("className"));
+                    classList.add(className);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        }
+
+        ArrayAdapter<String> classAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classList);
+        binding.spinnerClass.setAdapter(classAdapter);
+    }
 
 }
 

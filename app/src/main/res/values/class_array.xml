@@ -12,23 +12,58 @@
     </string-array>
 
     <string name="select_khoa">Chọn khoa</string>
+
+
     <string-array name="khoa_array">
         <item>CNTT</item>
         <item>KS</item>
+        <item>LOGISTIC</item>
+        <item>NNA</item>
+        <item>LKT</item>
         <!-- Thêm các khoa khác -->
     </string-array>
 
 
     <string-array name="lop_cntt_array">
-        <item>K12THO1</item>
         <item>K12THO2</item>
+        <item>K12THO3</item>
+        <item>K12THO4</item>
+        <item>K12THO5</item>
+        <item>K12THO1</item>
+
         <!-- Thêm các lớp khác trong khoa CNTT -->
     </string-array>
 
     <string-array name="lop_ks_array">
         <item>KSTHO1</item>
         <item>KSTHO2</item>
+        <item>KSTHO3</item>
+        <item>KSTHO4</item>
+        <item>KSTHO5</item>
         <!-- Thêm các lớp khác trong khoa KS -->
     </string-array>
+    <string-array name="lop_lkt_array">
+        <item>LKTTH01</item>
+        <item>LKTTH02</item>
+        <item>LKTTH03</item>
+        <item>LKTTH04</item>
+        <item>LKTTH05</item>
+    </string-array>
+
+    <string-array name="lop_nna_array">
+        <item>NNAHO1</item>
+        <item>NNAHO2</item>
+        <item>NNAHO3</item>
+        <item>NNAHO4</item>
+        <item>NNAHO5</item>
+    </string-array>
+    <string-array name="lop_lgt_array">
+        <item>LGTHO1</item>
+        <item>LGTHO2</item>
+        <item>LGTHO3</item>
+        <item>LGTHO4</item>
+        <item>LGTHO5</item>
+    </string-array>
+
 
 </resources>

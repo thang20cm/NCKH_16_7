@@ -141,7 +141,7 @@
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"
-                    android:text="Lớp:"/>
+                    android:text="Khoa:"/>
                 <TextView
                     android:fontFamily="@font/font_valera"
                     android:layout_width="wrap_content"

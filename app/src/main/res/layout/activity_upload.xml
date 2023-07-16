@@ -191,6 +191,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:fontFamily="@font/font_valera"
                         android:id="@+id/uploadDesc"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         />

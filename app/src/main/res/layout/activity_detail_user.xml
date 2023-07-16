@@ -91,17 +91,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
+                android:layout_marginTop="10dp">
                 <TextView
                     android:fontFamily="@font/font_valera"
                     android:textSize="18sp"
                     android:id="@+id/textViewLop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="25dp"
                     android:textColor="@color/red"
                     android:textStyle="bold"
-                    android:text="Lớp:"/>
+                    android:text="Phạm vi:"/>
                 <TextView
                     android:layout_toRightOf="@id/textViewLop"
                     android:layout_width="match_parent"
@@ -136,6 +136,7 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:text="Nội dung"
+                    android:autoLink="web"
                     android:layout_gravity="center"
                     android:id="@+id/detailDesc"
                     android:textSize="18sp"

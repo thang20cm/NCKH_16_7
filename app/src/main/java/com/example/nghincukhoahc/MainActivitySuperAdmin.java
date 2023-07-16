@@ -28,6 +28,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nghincukhoahc.activites.ManagerAdmin;
@@ -69,11 +70,15 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
     PreferenceManager preferenceManager;
     private static final int REQUEST_PERMISSION_CODE = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    TextView addKhoa,danhsachKhoa;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_super_admin);
+
+
 
         if (!hasPermissions(this, PERMISSIONS)) {
             // Kiểm tra xem hộp thoại yêu cầu cấp quyền đã hiển thị trước đó hay chưa
@@ -126,6 +131,18 @@ public class MainActivitySuperAdmin extends AppCompatActivity {
             }
             return false;
         });
+
+        addKhoa = findViewById(R.id.addKhoa);
+        addKhoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivitySuperAdmin.this,AddKhoaActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         recyclerView = findViewById(R.id.recyclerView);
         searchView = findViewById(R.id.search);

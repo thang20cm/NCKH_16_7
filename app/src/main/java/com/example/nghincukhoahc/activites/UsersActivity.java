@@ -73,9 +73,10 @@ public class UsersActivity extends BaseActivity implements UserListener {
     }
 
     private void showErrorMessage(){
-        binding.textErrorMessage.setText(String.format("%s","No User available"));
-        binding.textErrorMessage.setText(View.VISIBLE);
+        binding.textErrorMessage.setVisibility(View.VISIBLE);
+        binding.userRecyclerView.setVisibility(View.GONE);
     }
+
     private void loading(Boolean isloading){
         if(isloading){
             binding.progressBar.setVisibility(View.VISIBLE);

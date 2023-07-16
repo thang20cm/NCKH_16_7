@@ -8,12 +8,16 @@ public class Constants {
     public static final int PICK_IMAGE_REQUEST_CODE = 1;
     public static final String KEY_FROM_MAIN_ACTIVITY = "from_main_activity";
     public static final String KEY_FROM_USER_ACTIVITY = "from_user_activity";
+    public static final String KEY_FROM_KHOA_ACTIVITY = "from_khoa_activity";
 
     public static final String KEY_REMEMBER_ME = "remember_me";
     public static final String KEY_STATUS = "QuyenTruyCap";
     public static final String KEY_COLLECTION_USERS = "users";
     public static final String KEY_COLLECTION_ADMIN = "adminclass";
+    public static final String KEY_COLLECTION_KHOA = "adminkhoa";
+    public static final String KEY_COLLECTION_GIANGVIEN = "giangvien";
     public static final String KEY_SUBCOLLECTION_ADMIN = "adminstatus";
+    public static final String KEY_SUBCOLLECTION_GIANGVIEN = "giangvienstatus";
     public static final String KEY_REMEMBER_LOGIN = "remember_login";
     public static final String KEY_USER_TYPE = "usertype";
 
@@ -21,7 +25,8 @@ public class Constants {
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
-    public static final String KEY_CLASS = "class";
+    public static final String KEY_CLASS = "lop";
+    public static final String KEY_KHOA = "khoa";
     public static final String KEY_PREFERENCE_NAME = "chatAppPreference";
     public static final String KEY_IS_SIGNED_IN = "isSignedIn";
     public static final String KEY_USER_ID = "userId";

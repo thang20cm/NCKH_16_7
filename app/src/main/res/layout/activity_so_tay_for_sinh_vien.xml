@@ -26,6 +26,15 @@
         android:visibility="gone"
 
         tools:ignore="MissingConstraints" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#676767"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="56dp"/>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
         android:layout_width="match_parent"
@@ -34,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:background="#151515"
+        android:background="#1c2334"
         app:menu="@menu/bottom_menu_user"
         app:labelVisibilityMode="unlabeled"
         />

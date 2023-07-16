@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<DataClass> dataClasses = new ArrayList<>();
     private boolean showAllPosts = false;
-    String userClass,name,userId,email,status,image;
+    String userClass,userKhoa,name,userId,email,status,image;
     ImageView imageAdmin;
     private static final int REQUEST_PERMISSION_CODE = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -107,17 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
             preferenceManager = new PreferenceManager(getApplicationContext());
         fetchUserDataAndUpdatePreferences();
         setListeners();
 
 
-
+        userKhoa = preferenceManager.getString(Constants.KEY_KHOA);
         userClass = preferenceManager.getString(Constants.KEY_CLASS);
         if (userClass.equals("Tất cả")) {
             showAllPosts = true;
@@ -239,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             for (DocumentChange dc : value.getDocumentChanges()) {
                 DataClass dataClass = dc.getDocument().toObject(DataClass.class);
                 dataClass.setKey(dc.getDocument().getId());
-                if (dataClass.getDataLang().equals(userClass) || showAllPosts || dataClass.getDataLang().equals("Tất cả")) {
+                if (dataClass.getDataLang().equals(userClass) ||dataClass.getDataLang().equals(userKhoa)|| showAllPosts || dataClass.getDataLang().equals("Tất cả")) {
                     switch (dc.getType()) {
                         case ADDED:
                             dataList.add(dataClass);

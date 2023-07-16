@@ -22,7 +22,7 @@
  />
 
     <item android:id="@+id/xemdiem"
-        android:title="Xem điểm"
-        android:icon="@drawable/test_score"
+        android:title="Môn học"
+        android:icon="@drawable/monhoc"
   />
 </menu>

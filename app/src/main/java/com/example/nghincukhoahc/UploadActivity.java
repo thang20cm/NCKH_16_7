@@ -52,7 +52,7 @@ import java.util.StringJoiner;
 
 public class UploadActivity extends AppCompatActivity {
 
-    ImageView uploadImage,uploadFileIcon;
+    ImageView uploadImage,uploadFileIcon,backBtn;
     Button uploadFile;
     Button saveButton;
     EditText uploadTopic, uploadDesc;
@@ -80,6 +80,13 @@ public class UploadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload);
 
         borderUploadFile  = findViewById(R.id.borderUploadFile);
+        backBtn= findViewById(R.id.backButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         checkboxAll = findViewById(R.id.checkboxAll);
         checkboxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

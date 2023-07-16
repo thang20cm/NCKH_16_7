@@ -22,6 +22,78 @@
         android:theme="@style/Theme.StoreDataRealtime"
         tools:targetApi="31">
         <activity
+            android:name=".NopBaiTap"
+            android:exported="false" />
+        <activity
+            android:name=".BaiTapUser"
+            android:exported="false" />
+        <activity
+            android:name=".MonHocUser"
+            android:exported="false" />
+        <activity
+            android:name=".DetailBaiTap"
+            android:exported="false" />
+        <activity
+            android:name=".BaiTapAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".AddBaiTap"
+            android:exported="false" />
+        <activity
+            android:name=".BaitapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddMonHoc"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpGiangVien"
+            android:exported="false" />
+        <activity
+            android:name=".GiangVienActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChoXetDuyetGiangVien"
+            android:exported="false" />
+        <activity
+            android:name=".AddLopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddKhoaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activites.UpdateKhoaManager"
+            android:exported="false" />
+        <activity
+            android:name=".activites.DetailManagerKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".activites.ManagerKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateActivityKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".DetailActivityKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".UploadKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".ChoXetDuyetKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivityKhoa"
+            android:exported="false" />
+        <activity
+            android:name=".activites.SignUpKhoa"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileAdmin"
             android:exported="false" />
         <activity
@@ -138,9 +210,7 @@
         <activity
             android:name=".activites.SignIn"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">

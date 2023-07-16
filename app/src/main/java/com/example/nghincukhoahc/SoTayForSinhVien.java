@@ -10,16 +10,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nghincukhoahc.activites.MainActivity;
 import com.example.nghincukhoahc.activites.UsersActivity;
+import com.example.nghincukhoahc.utilities.Constants;
+import com.example.nghincukhoahc.utilities.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class SoTayForSinhVien extends AppCompatActivity {
+    private PreferenceManager preferenceManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_so_tay_for_sinh_vien);
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
 
         WebView webView = findViewById(R.id.webViewSV);
 
@@ -60,7 +65,9 @@ public class SoTayForSinhVien extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.xemdiem) {
-                startActivity(new Intent(getApplicationContext(), XemDiem.class));
+                Intent intent = new Intent(getApplicationContext(), MonHocUser.class);
+                intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS)); // Gửi giá trị "lop" qua Intent
+                startActivity(intent);
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;

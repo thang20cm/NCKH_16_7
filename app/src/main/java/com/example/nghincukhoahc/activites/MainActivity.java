@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.nghincukhoahc.MonHocUser;
 import com.example.nghincukhoahc.R;
 import com.example.nghincukhoahc.SoTayForSinhVien;
 import com.example.nghincukhoahc.UserActivity;
@@ -90,7 +91,9 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                 return true;
             }
             else if(item.getItemId() == R.id.xemdiem){
-                startActivity(new Intent(getApplicationContext(), XemDiem.class));
+                Intent intent = new Intent(getApplicationContext(), MonHocUser.class);
+                intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS)); // Gửi giá trị "lop" qua Intent
+                startActivity(intent);
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;

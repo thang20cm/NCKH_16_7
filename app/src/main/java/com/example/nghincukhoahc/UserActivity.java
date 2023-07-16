@@ -106,6 +106,7 @@ public class UserActivity extends AppCompatActivity {
         }
 
         String userClass = preferenceManager.getString(Constants.KEY_CLASS);
+        String userKhoa = preferenceManager.getString(Constants.KEY_KHOA);
         if (userClass.equals("Tất cả")) {
             showAllPosts = true;
         }
@@ -143,7 +144,9 @@ public class UserActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (item.getItemId() == R.id.xemdiem) {
-                startActivity(new Intent(getApplicationContext(), XemDiem.class));
+                Intent intent = new Intent(getApplicationContext(), MonHocUser.class);
+                intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS)); // Gửi giá trị "lop" qua Intent
+                startActivity(intent);
                 overridePendingTransition(R.anim.slider_in_right, R.anim.silde_out_left);
                 finish();
                 return true;
@@ -182,6 +185,7 @@ public class UserActivity extends AppCompatActivity {
                 intent.putExtra(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
                 intent.putExtra(Constants.KEY_EMAIL, preferenceManager.getString(Constants.KEY_EMAIL));
                 intent.putExtra(Constants.KEY_CLASS, preferenceManager.getString(Constants.KEY_CLASS));
+                intent.putExtra(Constants.KEY_KHOA, preferenceManager.getString(Constants.KEY_KHOA));
                 intent.putExtra(Constants.KEY_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
                 startActivity(intent);
                 finish();
@@ -203,7 +207,7 @@ public class UserActivity extends AppCompatActivity {
             dataList.clear();
             for (QueryDocumentSnapshot document : value) {
                 DataClass dataClass = document.toObject(DataClass.class);
-                if(showAllPosts||dataClass.getDataLang().equals("Tất cả")||dataClass.getDataLang().equals(userClass)){
+                if(showAllPosts||dataClass.getDataLang().equals("Tất cả")||dataClass.getDataLang().equals(userClass)||dataClass.getDataLang().equals(userKhoa)){
                     dataClass.setKey(document.getId());
                     dataList.add(dataClass);
                 }
@@ -287,11 +291,13 @@ public class UserActivity extends AppCompatActivity {
                 String newName = documentSnapshot.getString(Constants.KEY_NAME);
                 String newEmail = documentSnapshot.getString(Constants.KEY_EMAIL);
                 String newClass = documentSnapshot.getString(Constants.KEY_CLASS);
+                String newKhoa = documentSnapshot.getString(Constants.KEY_KHOA);
                 String newStatus = documentSnapshot.getString(Constants.KEY_STATUS);
 
                 preferenceManager.putString(Constants.KEY_NAME,newName);
                 preferenceManager.putString(Constants.KEY_EMAIL,newEmail);
                 preferenceManager.putString(Constants.KEY_CLASS,newClass);
+                preferenceManager.putString(Constants.KEY_KHOA,newKhoa);
                 preferenceManager.putString(Constants.KEY_STATUS,newStatus);
 
                 textViewAdminClass = findViewById(R.id.adminClass);

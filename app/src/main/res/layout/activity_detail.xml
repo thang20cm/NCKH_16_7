@@ -135,6 +135,7 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:text="Nội dung"
+                    android:autoLink="web"
                     android:layout_gravity="center"
                     android:id="@+id/detailDesc"
                     android:textSize="18sp"

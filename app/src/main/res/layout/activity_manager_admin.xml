@@ -23,10 +23,11 @@
         android:tint="@color/white"
         android:visibility="gone"/>
     <TextView
+        android:fontFamily="@font/font_valera"
         android:id="@+id/textViewQL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quản Lý Admin"
+        android:text="Quản Lý Người Dùng"
         android:textColor="@color/white"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
@@ -55,17 +56,89 @@
         android:background="@drawable/background_chat_input"
         >
     </androidx.appcompat.widget.SearchView>
+    <androidx.appcompat.widget.SearchView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/font_valera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:id="@+id/searchGV"
+        app:searchHintIcon="@null"
+        app:defaultQueryHint=""
+        app:queryHint="Search..."
+        android:focusable="false"
+        app:iconifiedByDefault="false"
+        app:closeIcon="@drawable/baseline_clear_24"
+        app:searchIcon="@drawable/baseline_search_24"
+        android:background="@drawable/background_chat_input"
+        >
+    </androidx.appcompat.widget.SearchView>
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="80dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" />
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
     <FrameLayout
         android:id="@+id/Frmlayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/background_content_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageback">
+        app:layout_constraintTop_toBottomOf="@android:id/tabhost">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:padding="@dimen/_20sdp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userRecyclerViewGV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

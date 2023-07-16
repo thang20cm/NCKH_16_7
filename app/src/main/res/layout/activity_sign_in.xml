@@ -114,6 +114,13 @@
                     android:layout_height="wrap_content"
                     android:text="Lớp trưởng"
                     android:layout_weight="1"/>
+                <RadioButton
+                    android:fontFamily="@font/font_valera"
+                    android:id="@+id/radioButtonGiangVien"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giảng viên"
+                    android:layout_weight="1"/>
 
                 <RadioButton
                     android:fontFamily="@font/font_valera"
@@ -122,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:text="Quản trị viên"
                     android:layout_weight="1"/>
+
             </RadioGroup>
 
 
@@ -170,7 +178,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:text="Tạo tài khoản lớp trưởng"
+            android:text="Tạo tài khoản quản trị lớp"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"/>
+        <TextView
+            android:fontFamily="@font/font_valera"
+            android:id="@+id/textCreateAccountGiangVien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="Tạo tài khoản giảng viên"
             android:textColor="@color/primary"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold"/>

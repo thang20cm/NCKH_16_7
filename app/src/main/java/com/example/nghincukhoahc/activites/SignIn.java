@@ -11,8 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nghincukhoahc.ChoXetDuyet;
+import com.example.nghincukhoahc.ChoXetDuyetKhoa;
+import com.example.nghincukhoahc.GiangVienActivity;
 import com.example.nghincukhoahc.MainActivity;
+import com.example.nghincukhoahc.MainActivityKhoa;
 import com.example.nghincukhoahc.MainActivitySuperAdmin;
+import com.example.nghincukhoahc.SignUpGiangVien;
 import com.example.nghincukhoahc.UserActivity;
 import com.example.nghincukhoahc.databinding.ActivitySignInBinding;
 import com.example.nghincukhoahc.utilities.Constants;
@@ -43,6 +47,9 @@ public class SignIn extends AppCompatActivity {
             }else if(preferenceManager.getBoolean(Constants.KEY_COLLECTION_ADMIN)){
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
+            else if(preferenceManager.getBoolean(Constants.KEY_COLLECTION_GIANGVIEN)){
+                startActivity(new Intent(getApplicationContext(), GiangVienActivity.class));
+            }
             else{
                 startActivity(new Intent(getApplicationContext(), UserActivity.class));
             }
@@ -58,6 +65,8 @@ public class SignIn extends AppCompatActivity {
     }
 
     private void setListeners(){
+        binding.textCreateAccountGiangVien.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), SignUpGiangVien.class)));
         binding.textCreateAccountAdmin.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), SignUpAdmin.class)));
         binding.textCreateAccount.setOnClickListener(v ->
@@ -68,6 +77,7 @@ public class SignIn extends AppCompatActivity {
                 if (isChecked) {
                     binding.radioButtonAdmin.setChecked(false);
                     binding.radioButtonSuperAdmin.setChecked(false);
+                    binding.radioButtonGiangVien.setChecked(false);
                 }
             });
             if (isValidSignInDetails()) {
@@ -76,7 +86,11 @@ public class SignIn extends AppCompatActivity {
                     singIn();
                 } else if (selectedRadioButtonId == binding.radioButtonAdmin.getId()) {
                     signInAdmin();
-                } else if (selectedRadioButtonId == binding.radioButtonSuperAdmin.getId()) {
+                }
+                else if(selectedRadioButtonId == binding.radioButtonGiangVien.getId()){
+                    signInGiangVien();
+                }
+                else if (selectedRadioButtonId == binding.radioButtonSuperAdmin.getId()) {
                     signInSuperadmin();
                 }
             }
@@ -98,6 +112,7 @@ public class SignIn extends AppCompatActivity {
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_SUPER_ADMIN,true);
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_USERS,false);
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,false);
+                        preferenceManager.putBoolean(Constants.KEY_COLLECTION_KHOA,false);
                         preferenceManager.putString(Constants.KEY_USER_ID,documentSnapshot.getId());
                         preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_NAME));
                         preferenceManager.putString(Constants.KEY_CLASS,documentSnapshot.getString(Constants.KEY_CLASS));
@@ -113,6 +128,91 @@ public class SignIn extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void signInGiangVien() {
+        loading(true);
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_GIANGVIEN)
+                .whereEqualTo(Constants.KEY_EMAIL, binding.inputEmail.getText().toString())
+                .whereEqualTo(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                        String status = documentSnapshot.getString(Constants.KEY_STATUS);
+                        if (status != null && status.equals("Enable")) {
+                            preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_USERS,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_SUPER_ADMIN,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_GIANGVIEN,true);
+                            preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                            preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
+                            preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
+                            startActivity(new Intent(getApplicationContext(), GiangVienActivity.class));
+                            finish();
+                        } else {
+                            preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                            preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                            preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
+                            preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
+                            startActivity(new Intent(getApplicationContext(), ChoXetDuyetKhoa.class));
+                            finish();
+                        }
+                    } else {
+                        loading(false);
+                        showToast("Unable to SignIn");
+                    }
+                });
+    }
+
+
+    private void signInKhoa() {
+        loading(true);
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection(Constants.KEY_COLLECTION_KHOA)
+                .whereEqualTo(Constants.KEY_EMAIL, binding.inputEmail.getText().toString())
+                .whereEqualTo(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                        String status = documentSnapshot.getString(Constants.KEY_STATUS);
+                        if (status != null && status.equals("Enable")) {
+                            preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_USERS,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_SUPER_ADMIN,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_KHOA,true);
+                            preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                            preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
+                            preferenceManager.putString(Constants.KEY_KHOA, documentSnapshot.getString(Constants.KEY_KHOA));
+                            preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
+                            startActivity(new Intent(getApplicationContext(), MainActivityKhoa.class));
+                            finish();
+                        } else {
+                            preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                            preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
+                            preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
+                            preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
+                            preferenceManager.putString(Constants.KEY_KHOA, documentSnapshot.getString(Constants.KEY_KHOA));
+                            preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
+                            preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
+                            startActivity(new Intent(getApplicationContext(), ChoXetDuyetKhoa.class));
+                            finish();
+                        }
+                    } else {
+                        loading(false);
+                        showToast("Unable to SignIn");
+                    }
+                });
     }
 
 
@@ -131,11 +231,13 @@ public class SignIn extends AppCompatActivity {
                             preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                             preferenceManager.putBoolean(Constants.KEY_COLLECTION_USERS,false);
                             preferenceManager.putBoolean(Constants.KEY_COLLECTION_SUPER_ADMIN,false);
+                            preferenceManager.putBoolean(Constants.KEY_COLLECTION_GIANGVIEN,false);
                             preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,true);
                             preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
                             preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
                             preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
                             preferenceManager.putString(Constants.KEY_CLASS, documentSnapshot.getString(Constants.KEY_CLASS));
+                            preferenceManager.putString(Constants.KEY_KHOA, documentSnapshot.getString(Constants.KEY_KHOA));
                             preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
                             preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -146,6 +248,7 @@ public class SignIn extends AppCompatActivity {
                             preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
                             preferenceManager.putString(Constants.KEY_EMAIL, documentSnapshot.getString(Constants.KEY_EMAIL));
                             preferenceManager.putString(Constants.KEY_CLASS, documentSnapshot.getString(Constants.KEY_CLASS));
+                            preferenceManager.putString(Constants.KEY_KHOA, documentSnapshot.getString(Constants.KEY_KHOA));
                             preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
                             preferenceManager.putString(Constants.KEY_STATUS, documentSnapshot.getString(Constants.KEY_STATUS));
                             startActivity(new Intent(getApplicationContext(), ChoXetDuyet.class));
@@ -169,11 +272,13 @@ public class SignIn extends AppCompatActivity {
                         DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
                         preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN,true);
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_USERS,true);
+                        preferenceManager.putBoolean(Constants.KEY_COLLECTION_GIANGVIEN,false);
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_SUPER_ADMIN,false);
                         preferenceManager.putBoolean(Constants.KEY_COLLECTION_ADMIN,false);
                         preferenceManager.putString(Constants.KEY_USER_ID,documentSnapshot.getId());
                         preferenceManager.putString(Constants.KEY_NAME,documentSnapshot.getString(Constants.KEY_NAME));
                         preferenceManager.putString(Constants.KEY_CLASS,documentSnapshot.getString(Constants.KEY_CLASS));
+                        preferenceManager.putString(Constants.KEY_KHOA,documentSnapshot.getString(Constants.KEY_KHOA));
                         preferenceManager.putString(Constants.KEY_IMAGE,documentSnapshot.getString(Constants.KEY_IMAGE));
                         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -67,7 +67,7 @@ public class UpdateAdminManager extends AppCompatActivity {
                 intent.putExtra(Constants.KEY_NAME, updateNameadmin.getText().toString());
                 intent.putExtra(Constants.KEY_EMAIL, updateEmailadmin.getText().toString());
                 intent.putExtra(Constants.KEY_PASSWORD, updatePasswordadmin.getText().toString());
-                intent.putExtra(Constants.KEY_CLASS, updateClassadmin.getSelectedItem().toString());
+                intent.putExtra(Constants.KEY_KHOA, updateClassadmin.getSelectedItem().toString());
                 intent.putExtra(Constants.KEY_STATUS, updateQuentruycap.getSelectedItem().toString());
 
 
@@ -83,7 +83,7 @@ public class UpdateAdminManager extends AppCompatActivity {
         updateAdminBtn = findViewById(R.id.saveAdminBtn);
         updateImgAdmin = findViewById(R.id.updateImageAdmin);
 
-        classArray = getResources().getStringArray(R.array.upload_class_array);
+        classArray = getResources().getStringArray(R.array.upload_khoa_array);
         spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, classArray);
 
         classArrayQTC = getResources().getStringArray(R.array.quyentruycap_array);
@@ -109,7 +109,7 @@ public class UpdateAdminManager extends AppCompatActivity {
             updateNameadmin.setText(bundle.getString(Constants.KEY_NAME));
             updateEmailadmin.setText(bundle.getString(Constants.KEY_EMAIL));
             updatePasswordadmin.setText(bundle.getString(Constants.KEY_PASSWORD));
-            String currentDataClass = bundle.getString(Constants.KEY_CLASS);
+            String currentDataClass = bundle.getString(Constants.KEY_KHOA);
             String currentDataQTC = bundle.getString(Constants.KEY_STATUS);
             String base64Image = bundle.getString(Constants.KEY_IMAGE);
 
@@ -174,12 +174,12 @@ public class UpdateAdminManager extends AppCompatActivity {
         }
 
         // Cập nhật dữ liệu vào Firestore
-        documentReference = firestore.collection(Constants.KEY_COLLECTION_ADMIN).document(userId);
+        documentReference = firestore.collection(Constants.KEY_COLLECTION_KHOA).document(userId);
         documentReference.update(
                 Constants.KEY_NAME, nameAdmin,
                 Constants.KEY_EMAIL, emailAdmin,
                 Constants.KEY_PASSWORD, passwordAdmin,
-                Constants.KEY_CLASS, classAdmin,
+                Constants.KEY_KHOA, classAdmin,
                 Constants.KEY_STATUS,selectedStatus
         ).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
